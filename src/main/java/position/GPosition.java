@@ -19,7 +19,7 @@ public class GPosition implements ICodage {
     int[] etats;
     ArrayList<String> cp_coupsvalides_lan;
     ArrayList<GCoups> coupsvalides;
-    
+
     private ArrayList<String> coupsvalides_lan;
 
     public GPosition() {
@@ -47,90 +47,23 @@ public class GPosition implements ICodage {
 
         int caseO = gcoups.getCaseO();
         int caseX = gcoups.getCaseX();
+
         caseEP = -1;
         if (gcoups.getPiece() == PION && Math.abs(caseX - caseO) == 24) {// avance de 2 cases
             caseEP = trait == NOIR ? caseX + 12 : caseX - 12;
         }
+
         switch (gcoups.getTypeDeCoups()) {
             case Deplacement:
                 etats[caseX] = etats[caseO];
                 etats[caseO] = VIDE;
-                //piece deplacee = tour ou roi
-                if (trait == BLANC) {
-                    if (gcoups.getPiece() == ROI) {
-                        droitPetitRoqueBlanc = false;
-                        droitGrandRoqueBlanc = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == h1) {
-                        droitPetitRoqueBlanc = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == a1) {
-                        droitGrandRoqueBlanc = false;
-                    }
-                } else if (trait == NOIR) {
-                    if (gcoups.getPiece() == ROI) {
-                        droitPetitRoqueNoir = false;
-                        droitGrandRoqueNoir = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == h8) {
-                        droitPetitRoqueNoir = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == a8) {
-                        droitGrandRoqueNoir = false;
-                    }
-                }
-                //plus de roi ou tour
-                if (trait == BLANC) {
-                    if (etats[a1] != -TOUR || etats[e1] != -ROI) {
-                        droitGrandRoqueBlanc = false;
-                    }
-                    if (etats[h1] != -TOUR || etats[e1] != -ROI) {
-                        droitPetitRoqueBlanc = false;
-                    }
-                } else if (trait == NOIR) {
-                    if (etats[a8] != TOUR || etats[e8] != ROI) {
-                        droitGrandRoqueNoir = false;
-                    }
-                    if (etats[h8] != TOUR || etats[e8] != ROI) {
-                        droitPetitRoqueNoir = false;
-                    }
-                }
+                valideDroitRoque(gcoups);
                 break;
             case Prise:
                 etats[caseX] = etats[caseO];
                 etats[caseO] = VIDE;
                 //piece prise = tour
-                if (trait == BLANC) {
-                    if (gcoups.getPiece() == ROI) {
-                        droitPetitRoqueBlanc = false;
-                        droitGrandRoqueBlanc = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == h1) {
-                        droitPetitRoqueBlanc = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == a1) {
-                        droitGrandRoqueBlanc = false;
-                    }
-                } else if (trait == NOIR) {
-                    if (gcoups.getPiece() == ROI) {
-                        droitPetitRoqueNoir = false;
-                        droitGrandRoqueNoir = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == h8) {
-                        droitPetitRoqueNoir = false;
-                    } else if (gcoups.getPiece() == TOUR && caseO == a8) {
-                        droitGrandRoqueNoir = false;
-                    }
-                }
-                if (trait == BLANC) {
-                    if (etats[a1] != -TOUR || etats[e1] != -ROI) {
-                        droitGrandRoqueBlanc = false;
-                    }
-                    if (etats[h1] != -TOUR || etats[e1] != -ROI) {
-                        droitPetitRoqueBlanc = false;
-                    }
-                } else if (trait == NOIR) {
-                    if (etats[a8] != TOUR || etats[e8] != ROI) {
-                        droitGrandRoqueNoir = false;
-                    }
-                    if (etats[h8] != TOUR || etats[e8] != ROI) {
-                        droitPetitRoqueNoir = false;
-                    }
-                }
-
+                valideDroitRoque(gcoups);
                 break;
             case EnPassant:
                 // caseX == caseEP
@@ -166,6 +99,49 @@ public class GPosition implements ICodage {
         trait = -trait;
 
         return true;
+    }
+
+    private void valideDroitRoque(GCoups gcoups) {
+        int caseO = gcoups.getCaseO();
+        int piece = gcoups.getPiece();
+        //piece deplacee = tour ou roi
+        if (trait == BLANC) {
+            if (piece == ROI) {
+                droitPetitRoqueBlanc = false;
+                droitGrandRoqueBlanc = false;
+            } else if (piece == TOUR && caseO == h1) {
+                droitPetitRoqueBlanc = false;
+            } else if (piece == TOUR && caseO == a1) {
+                droitGrandRoqueBlanc = false;
+            }
+            kingAndRookNotMove(e1, a1, h1);// roi et tour à leurs places
+        } else if (trait == NOIR) {
+            if (piece == ROI) {
+                droitPetitRoqueNoir = false;
+                droitGrandRoqueNoir = false;
+            } else if (piece == TOUR && caseO == h8) {
+                droitPetitRoqueNoir = false;
+            } else if (piece == TOUR && caseO == a8) {
+                droitGrandRoqueNoir = false;
+            }
+            if (etats[a8] != TOUR || etats[e8] != ROI) {
+                droitGrandRoqueNoir = false;
+            }
+            if (etats[h8] != TOUR || etats[e8] != ROI) {
+                droitPetitRoqueNoir = false;
+            }
+        }
+
+    }
+
+    private void kingAndRookNotMove(int R, int Ta, int Th) {
+        if (etats[Ta] != -TOUR || etats[R] != -ROI) {
+            droitGrandRoqueBlanc = false;
+        }
+//            droitGrandRoqueBlanc = etats[a1] != -TOUR || etats[e1] != -ROI ? false:droitGrandRoqueBlanc;
+        if (etats[Th] != -TOUR || etats[R] != -ROI) {
+            droitPetitRoqueBlanc = false;
+        }
     }
 
     public void unexec(UndoGCoups ui) {
