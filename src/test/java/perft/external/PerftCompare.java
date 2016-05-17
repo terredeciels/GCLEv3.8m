@@ -13,7 +13,7 @@ public class PerftCompare {
 
     public static void main(String[] args) throws IOException {
         int maxDepth = 4;
-        FileReader fileReader = new FileReader("D:\\Documents\\CHESS\\MAVEN\\FINAL\\GCLEv3.7m_2\\perftsuite.epd");
+        FileReader fileReader = new FileReader("D:\\Documents\\CHESS\\MAVEN\\FINAL\\GCLEv3.8m\\perftsuite.epd");
         BufferedReader reader = new BufferedReader(fileReader);
         String line;
         int passes = 0;

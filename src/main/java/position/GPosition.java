@@ -106,35 +106,47 @@ public class GPosition implements ICodage {
         int piece = gcoups.getPiece();
         //piece deplacee = tour ou roi
         if (trait == BLANC) {
-            if (piece == ROI) {
-                droitPetitRoqueBlanc = false;
-                droitGrandRoqueBlanc = false;
-            } else if (piece == TOUR && caseO == h1) {
-                droitPetitRoqueBlanc = false;
-            } else if (piece == TOUR && caseO == a1) {
-                droitGrandRoqueBlanc = false;
+            switch (piece) {
+                case ROI:
+                    droitPetitRoqueBlanc = false;
+                    droitGrandRoqueBlanc = false;
+                    break;
+                case TOUR:
+                    droitPetitRoqueBlanc = caseO == h1 ? false : droitPetitRoqueBlanc;
+                    droitGrandRoqueBlanc = caseO == a1 ? false : droitGrandRoqueBlanc;
+                    break;
+                default:
+                    break;
             }
-            kingAndRookNotMove(e1, a1, h1);// roi et tour à leurs places
+            kingAndRookWhiteNotMove(e1, a1, h1);// roi et tour à leurs places
         } else if (trait == NOIR) {
-            if (piece == ROI) {
-                droitPetitRoqueNoir = false;
-                droitGrandRoqueNoir = false;
-            } else if (piece == TOUR && caseO == h8) {
-                droitPetitRoqueNoir = false;
-            } else if (piece == TOUR && caseO == a8) {
-                droitGrandRoqueNoir = false;
+            switch (piece) {
+                case ROI:
+                    droitPetitRoqueNoir = false;
+                    droitGrandRoqueNoir = false;
+                    break;
+                case TOUR:
+                    droitPetitRoqueNoir = caseO == h8 ? false : droitPetitRoqueNoir;
+                    droitGrandRoqueNoir = caseO == a8 ? false : droitGrandRoqueNoir;
+                    break;
+                default:
+                    break;
             }
-            if (etats[a8] != TOUR || etats[e8] != ROI) {
-                droitGrandRoqueNoir = false;
-            }
-            if (etats[h8] != TOUR || etats[e8] != ROI) {
-                droitPetitRoqueNoir = false;
-            }
+            kingAndRookBlackNotMove(e8, a8, h8);
         }
 
     }
 
-    private void kingAndRookNotMove(int R, int Ta, int Th) {
+    private void kingAndRookBlackNotMove(int R, int Ta, int Th) {
+        if (etats[Ta] != TOUR || etats[R] != ROI) {
+            droitGrandRoqueNoir = false;
+        }
+        if (etats[Th] != TOUR || etats[R] != ROI) {
+            droitPetitRoqueNoir = false;
+        }
+    }
+
+    private void kingAndRookWhiteNotMove(int R, int Ta, int Th) {
         if (etats[Ta] != -TOUR || etats[R] != -ROI) {
             droitGrandRoqueBlanc = false;
         }
