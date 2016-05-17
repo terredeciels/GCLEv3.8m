@@ -18,7 +18,7 @@ public class PerftTest {
 
     @Test
     public void testInitPos() {
-        GPosition position = FenToGPosition.toGPosition(ICodage.fen_initiale);
+        GPosition position = FenToGPosition.toGPosition(ICodage.FEN_INITIALE);
         PerftResult p = Perft.perft(position, 1);
         assertEquals(20, p.moveCount);
         PerftResult p2 = Perft.perft(position, 2);

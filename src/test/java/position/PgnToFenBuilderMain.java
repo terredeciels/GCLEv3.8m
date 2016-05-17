@@ -1,5 +1,6 @@
-package pgntofen;
+package position;
 
+import position.Pgn;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

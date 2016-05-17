@@ -33,7 +33,7 @@ public class PerftChessPressoTest {
     @Test
     public void perftchesspresso() throws IllegalMoveException {
 
-        String fen = ICodage.fen_initiale;
+        String fen = ICodage.FEN_INITIALE;
         fen = "r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1";
         Position pos = new Position(fen);
 

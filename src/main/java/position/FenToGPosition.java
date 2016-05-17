@@ -2,8 +2,6 @@ package position;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.collections.iterators.ArrayIterator;
 import org.chesspresso.Chess;
 import org.chesspresso.move.Move;

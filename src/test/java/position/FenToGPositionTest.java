@@ -36,10 +36,10 @@ public class FenToGPositionTest {
     @Test
     public void fenToGPosition() throws IllegalMoveException {
 
-//        String f = ICodage.fen_initiale;
+//        String f = ICodage.FEN_INITIALE;
 //        f="4k2r/3b1p2/p3pq1p/1p5Q/P1ppB2p/2b5/1P3PPP/2KR3R b k - 1 18";
         String f = "r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1";
-        f="r3kr2/8/8/8/8/8/6K1/8 b q - 3 2";
+        f = "r3kr2/8/8/8/8/8/6K1/8 b q - 3 2";
         GPosition gp = FenToGPosition.toGPosition(f);
         ArrayList<GCoups> coupsvalides = gp.getCoupsValides();
         assertEquals(gp.getCoupsvalides_lan(), gp.cp_coupsvalides_lan);
@@ -47,7 +47,7 @@ public class FenToGPositionTest {
 
         GCoups gcoups = new IAleatoire().evaluate(coupsvalides);
         UndoGCoups ui = new UndoGCoups();
-        gp.exec(gcoups,ui);
+        gp.exec(gcoups, ui);
         gp.getCoupsValides();
 
         short[] allMoves = gp.position.getAllMoves();

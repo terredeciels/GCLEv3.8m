@@ -1,10 +1,8 @@
 package ia;
 
-import com.googlecode.jctree.Tree;
 import java.util.ArrayList;
 import java.util.Random;
 import position.GCoups;
-import position.GPosition;
 
 public class IAleatoire {
 
@@ -27,12 +25,5 @@ public class IAleatoire {
         short move = allMoves[randomInt];
         return move;
     }
-//    public GCoups evaluate(Tree<GPosition> t) {
-//
-//        ArrayList<GCoups> coupsvalides = t.root().getCoupsValides().get();
-//        int randomInt = randomGenerator.nextInt(coupsvalides.size());
-//        GCoups gcoups = coupsvalides.get(randomInt);
-//        return gcoups;
-//    }
 
 }

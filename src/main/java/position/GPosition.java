@@ -18,8 +18,8 @@ public class GPosition implements ICodage {
     int caseEP;
     int[] etats;
     ArrayList<String> cp_coupsvalides_lan;
-
     ArrayList<GCoups> coupsvalides;
+    
     private ArrayList<String> coupsvalides_lan;
 
     public GPosition() {
@@ -51,13 +51,11 @@ public class GPosition implements ICodage {
         if (gcoups.getPiece() == PION && Math.abs(caseX - caseO) == 24) {// avance de 2 cases
             caseEP = trait == NOIR ? caseX + 12 : caseX - 12;
         }
-//        if (gcoups.getTypeDeCoups() != null) {
         switch (gcoups.getTypeDeCoups()) {
             case Deplacement:
                 etats[caseX] = etats[caseO];
                 etats[caseO] = VIDE;
                 //piece deplacee = tour ou roi
-
                 if (trait == BLANC) {
                     if (gcoups.getPiece() == ROI) {
                         droitPetitRoqueBlanc = false;
@@ -164,7 +162,6 @@ public class GPosition implements ICodage {
             default:
                 break;
         }
-//        }
 
         trait = -trait;
 
@@ -242,30 +239,6 @@ public class GPosition implements ICodage {
                 + coupsvalides_lan
                 : "G_CoupsValides : " + '\n' + coupsvalides_lan;
 //        return coupsvalides_lan.toString();
-    }
-
-    public boolean isDroitPetitRoqueNoir() {
-        return droitPetitRoqueNoir;
-    }
-
-    public boolean isDroitGrandRoqueNoir() {
-        return droitGrandRoqueNoir;
-    }
-
-    public boolean isDroitPetitRoqueBlanc() {
-        return droitPetitRoqueBlanc;
-    }
-
-    public boolean isDroitGrandRoqueBlanc() {
-        return droitGrandRoqueBlanc;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public ArrayList<String> getCp_coupsvalides_lan() {
-        return cp_coupsvalides_lan;
     }
 
 }

@@ -3,7 +3,7 @@ package position;
 public interface ICodage {
 
     final static int PAS_DE_CASE = -1;    // e.p.
-    final String fen_initiale = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    final String FEN_INITIALE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     final int BLANC = -1,
             NOIR = 1;
     final int a1 = 26,

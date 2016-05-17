@@ -45,7 +45,7 @@ public class PerftGCLEPosInitTest {
     @Test
     public void perftTest() {
         //voir http://chessprogramming.wikispaces.com/Perft+Results
-        String f = ICodage.fen_initiale;
+        String f = ICodage.FEN_INITIALE;
 
         GPosition gp = FenToGPosition.toGPosition(f);
         long miniMax = miniMax(gp, 1);

@@ -13,7 +13,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import pgntofen.Pgn;
 import static position.ICodage.BLANC;
 
 public class ExecGCoupsTest {
@@ -64,8 +63,8 @@ public class ExecGCoupsTest {
                 }
 
                 short[] allMoves = gp.position.getAllMoves();
-                    //                short move = allMoves[0];
-                    // PRODUIRE ALEATOIREMENT
+                //                short move = allMoves[0];
+                // PRODUIRE ALEATOIREMENT
                 short move = new IAleatoire().evaluate(allMoves);
                 gp.position.doMove(move);
 
