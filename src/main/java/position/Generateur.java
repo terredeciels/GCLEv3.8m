@@ -110,7 +110,7 @@ public class Generateur extends AbstractGenerateur {
         final GPosition pgPosition = pGen.getGPosition();
         final int[] pgEtats = pgPosition.etats;
         if (couleur == BLANC) {
-            if (pgPosition.droitPetitRoqueBlanc) {
+            if (pgPosition.roques[0]) {
                 possible = ((pgEtats[f1] == VIDE)
                         && (pgEtats[h1] == -TOUR)
                         && (pgEtats[e1] == -ROI)
@@ -121,7 +121,7 @@ public class Generateur extends AbstractGenerateur {
                     fCoups.add(new GCoups(ROI, e1, g1, h1, f1, 0, TYPE_DE_COUPS.Roque));
                 }
             }
-            if (pgPosition.droitGrandRoqueBlanc) {
+            if (pgPosition.roques[1]) {
                 possible = ((pgEtats[d1] == VIDE)
                         && (pgEtats[a1] == -TOUR)
                         && (pgEtats[e1] == -ROI)
@@ -134,7 +134,7 @@ public class Generateur extends AbstractGenerateur {
                 }
             }
         } else {
-            if (pgPosition.droitPetitRoqueNoir) {
+            if (pgPosition.roques[2]) {
                 possible = ((pgEtats[f8] == VIDE)
                         && (pgEtats[h8] == TOUR)
                         && (pgEtats[e8] == ROI)
@@ -145,7 +145,7 @@ public class Generateur extends AbstractGenerateur {
                     fCoups.add(new GCoups(ROI, e8, g8, h8, f8, 0, TYPE_DE_COUPS.Roque));
                 }
             }
-            if (pgPosition.droitGrandRoqueNoir) {
+            if (pgPosition.roques[3]) {
                 possible = ((pgEtats[d8] == VIDE)
                         && (pgEtats[a8] == TOUR)
                         && (pgEtats[e8] == ROI)

@@ -1,21 +1,28 @@
 package position;
 
+import static position.ICodage.*;
+
 public class GPositionMove {
 
     int caseEP;
-    boolean droitGrandRoqueBlanc;
-    boolean droitGrandRoqueNoir;
-    boolean droitPetitRoqueBlanc;
-    boolean droitPetitRoqueNoir;
+    Roque R;
+    boolean[] roques;
+//    boolean[] roques;
+//    boolean droitGrandRoqueBlanc;
+//    boolean droitGrandRoqueNoir;
+//    boolean droitPetitRoqueBlanc;
+//    boolean droitPetitRoqueNoir;
+
     int[] etats;
     int trait;
 
     public boolean exec(GCoups gcoups, UndoGCoups ui) {
         System.arraycopy(etats, 0, ui.etats, 0, ICodage.NB_CELLULES);
-        ui.droitPetitRoqueNoir = droitPetitRoqueNoir;
-        ui.droitGrandRoqueNoir = droitGrandRoqueNoir;
-        ui.droitPetitRoqueBlanc = droitPetitRoqueBlanc;
-        ui.droitGrandRoqueBlanc = droitGrandRoqueBlanc;
+       ui. setKQkq(roques);
+//        ui.droitPetitRoqueNoir = droitPetitRoqueNoir;
+//        ui.droitGrandRoqueNoir = droitGrandRoqueNoir;
+//        ui.droitPetitRoqueBlanc = droitPetitRoqueBlanc;
+//        ui.droitGrandRoqueBlanc = droitGrandRoqueBlanc;
         ui.caseEP = caseEP;
         int caseO = gcoups.getCaseO();
         int caseX = gcoups.getCaseX();
@@ -55,13 +62,17 @@ public class GPositionMove {
                 etats[caseO] = ICodage.VIDE;
                 etats[gcoups.getCaseXTour()] = etats[gcoups.getCaseOTour()]; //TOUR
                 etats[gcoups.getCaseOTour()] = ICodage.VIDE;
-                if (trait == ICodage.BLANC) {
-                    droitPetitRoqueBlanc = false;
-                    droitGrandRoqueBlanc = false;
-                } else {
-                    droitPetitRoqueNoir = false;
-                    droitGrandRoqueNoir = false;
-                }
+
+                R.unsetRoque(trait);
+//                if (trait == ICodage.BLANC) {
+//                    unsetKQ();
+////                    droitPetitRoqueBlanc = false;
+////                    droitGrandRoqueBlanc = false;
+//                } else {
+//                    unsetkq();
+////                    droitPetitRoqueNoir = false;
+////                    droitGrandRoqueNoir = false;
+//                }
                 break;
             default:
                 break;
@@ -70,31 +81,13 @@ public class GPositionMove {
         return true;
     }
 
-    protected void kingAndRookBlackNotMove(int R, int Ta, int Th) {
-        if (etats[Ta] != ICodage.TOUR || etats[R] != ICodage.ROI) {
-            droitGrandRoqueNoir = false;
-        }
-        if (etats[Th] != ICodage.TOUR || etats[R] != ICodage.ROI) {
-            droitPetitRoqueNoir = false;
-        }
-    }
-
-    protected void kingAndRookWhiteNotMove(int R, int Ta, int Th) {
-        if (etats[Ta] != -ICodage.TOUR || etats[R] != -ICodage.ROI) {
-            droitGrandRoqueBlanc = false;
-        }
-        //            droitGrandRoqueBlanc = etats[a1] != -TOUR || etats[e1] != -ROI ? false:droitGrandRoqueBlanc;
-        if (etats[Th] != -ICodage.TOUR || etats[R] != -ICodage.ROI) {
-            droitPetitRoqueBlanc = false;
-        }
-    }
-
     public void unexec(UndoGCoups ui) {
         System.arraycopy(ui.etats, 0, etats, 0, ICodage.NB_CELLULES);
-        droitPetitRoqueNoir = ui.droitPetitRoqueNoir;
-        droitGrandRoqueNoir = ui.droitGrandRoqueNoir;
-        droitPetitRoqueBlanc = ui.droitPetitRoqueBlanc;
-        droitGrandRoqueBlanc = ui.droitGrandRoqueBlanc;
+        setKQkq(ui.roques);
+//        droitPetitRoqueNoir = ui.droitPetitRoqueNoir;
+//        droitGrandRoqueNoir = ui.droitGrandRoqueNoir;
+//        droitPetitRoqueBlanc = ui.droitPetitRoqueBlanc;
+//        droitGrandRoqueBlanc = ui.droitGrandRoqueBlanc;
         caseEP = ui.caseEP;
         trait = -trait;
     }
@@ -105,27 +98,41 @@ public class GPositionMove {
         //piece deplacee = tour ou roi
         if (trait == ICodage.BLANC) {
             switch (piece) {
-                case ICodage.ROI:
-                    droitPetitRoqueBlanc = false;
-                    droitGrandRoqueBlanc = false;
+                case ROI:
+                    R.unsetRoque(trait);
+//                    droitPetitRoqueBlanc = false;
+//                    droitGrandRoqueBlanc = false;
                     break;
-                case ICodage.TOUR:
-                    droitPetitRoqueBlanc = caseO == ICodage.h1 ? false : droitPetitRoqueBlanc;
-                    droitGrandRoqueBlanc = caseO == ICodage.a1 ? false : droitGrandRoqueBlanc;
+                case TOUR:
+                    if (caseO == h1) {
+                        R.unsetK();
+                    }
+                    if (caseO == a1) {
+                        R.unsetQ();
+                    }
+//                    droitPetitRoqueBlanc = caseO == ICodage.h1 ? false : droitPetitRoqueBlanc;
+//                    droitGrandRoqueBlanc = caseO == ICodage.a1 ? false : droitGrandRoqueBlanc;
                     break;
                 default:
                     break;
             }
             kingAndRookWhiteNotMove(ICodage.e1, ICodage.a1, ICodage.h1); // roi et tour à leurs places
-        } else if (trait == ICodage.NOIR) {
+        } else if (trait == NOIR) {
             switch (piece) {
-                case ICodage.ROI:
-                    droitPetitRoqueNoir = false;
-                    droitGrandRoqueNoir = false;
+                case ROI:
+                    R.unsetRoque(trait);
+//                    droitPetitRoqueNoir = false;
+//                    droitGrandRoqueNoir = false;
                     break;
-                case ICodage.TOUR:
-                    droitPetitRoqueNoir = caseO == ICodage.h8 ? false : droitPetitRoqueNoir;
-                    droitGrandRoqueNoir = caseO == ICodage.a8 ? false : droitGrandRoqueNoir;
+                case TOUR:
+                    if (caseO == h1) {
+                        R.unsetk();
+                    }
+                    if (caseO == a1) {
+                        R.unsetq();
+                    }
+//                    droitPetitRoqueNoir = caseO == ICodage.h8 ? false : droitPetitRoqueNoir;
+//                    droitGrandRoqueNoir = caseO == ICodage.a8 ? false : droitGrandRoqueNoir;
                     break;
                 default:
                     break;
@@ -134,4 +141,34 @@ public class GPositionMove {
         }
     }
 
+    protected void kingAndRookBlackNotMove(int caseRoi, int Ta, int Th) {
+        if (etats[Ta] != TOUR || etats[caseRoi] != ROI) {
+            R.unsetq();
+
+//            droitGrandRoqueNoir = false;
+        }
+        if (etats[Th] != TOUR || etats[caseRoi] != ROI) {
+            R.unsetk();
+//            droitPetitRoqueNoir = false;
+        }
+    }
+
+    protected void kingAndRookWhiteNotMove(int caseRoi, int Ta, int Th) {
+        if (etats[Ta] != -TOUR || etats[caseRoi] != -ROI) {
+            R.unsetQ();
+//            droitGrandRoqueBlanc = false;
+        }
+        //            droitGrandRoqueBlanc = etats[a1] != -TOUR || etats[e1] != -ROI ? false:droitGrandRoqueBlanc;
+        if (etats[Th] != -TOUR || etats[caseRoi] != -ROI) {
+            R.unsetK();
+//            droitPetitRoqueBlanc = false;
+        }
+    }
+
+    void setKQkq(boolean[] roq) {
+        roques[0] = roq[0];
+        roques[1] = roq[1];
+        roques[2] = roq[2];
+        roques[3] = roq[3];
+    }
 }

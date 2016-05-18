@@ -118,4 +118,64 @@ public interface ICodage {
 
         Roque, EnPassant, Promotion, Deplacement, Prise, Attaque;
     }
+
+    class Roque {
+
+         boolean[] roques;
+
+        public Roque() {
+            roques=new boolean[4];
+        }
+
+        /*
+        K petit roque blanc
+        Q grand roque blanc
+        k petit roque noir
+        q grand roque noir
+         */
+         void set(boolean K, boolean Q, boolean k, boolean q) {
+            roques[0] = K;
+            roques[1] = Q;
+            roques[2] = k;
+            roques[3] = q;
+        }
+
+         void setK(boolean K) {
+            roques[0] = K;
+        }
+
+         void unsetRoque(int color) {
+            if (color == BLANC) {
+                unsetKQ();
+            } else if (color == NOIR) {
+                unsetkq();
+            }
+        }
+
+         void unsetK() {
+            roques[0] = false;
+        }
+
+         void unsetQ() {
+            roques[1] = false;
+        }
+
+         void unsetKQ() {
+            roques[0] = false;
+            roques[1] = false;
+        }
+
+         void unsetkq() {
+            roques[2] = false;
+            roques[3] = false;
+        }
+
+         void unsetk() {
+            roques[2] = false;
+        }
+
+         void unsetq() {
+            roques[3] = false;
+        }
+    }
 }
