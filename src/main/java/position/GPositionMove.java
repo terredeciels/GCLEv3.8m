@@ -75,23 +75,23 @@ public class GPositionMove {
         int caseO = gcoups.getCaseO();
         int piece = gcoups.getPiece();
         //piece deplacee = tour ou roi
-        if (trait == ICodage.BLANC) {
+        if (trait == BLANC) {
             switch (piece) {
                 case ROI:
                     R.unsetRoque(trait);
                     break;
                 case TOUR:
                     if (caseO == h1) {
-                        R.unsetK();
+                        R.unsetK(BLANC);
                     }
                     if (caseO == a1) {
-                        R.unsetQ();
+                        R.unsetQ(BLANC);
                     }
                     break;
                 default:
                     break;
             }
-            kingAndRookWhiteNotMove(ICodage.e1, ICodage.a1, ICodage.h1); // roi et tour à leurs places
+            kingOrRookHaveMove(e1, a1, h1, BLANC); // roi et tour à leurs places
         } else if (trait == NOIR) {
             switch (piece) {
                 case ROI:
@@ -99,37 +99,37 @@ public class GPositionMove {
                     break;
                 case TOUR:
                     if (caseO == h1) {
-                        R.unsetk();
+                        R.unsetK(NOIR);
                     }
                     if (caseO == a1) {
-                        R.unsetq();
+                        R.unsetQ(NOIR);
                     }
                     break;
                 default:
                     break;
             }
-            kingAndRookBlackNotMove(ICodage.e8, ICodage.a8, ICodage.h8);
+            kingOrRookHaveMove(e8, a8, h8, NOIR);
         }
     }
 
-    protected void kingAndRookBlackNotMove(int caseRoi, int Ta, int Th) {
-        if (etats[Ta] != TOUR || etats[caseRoi] != ROI) {
-            R.unsetq();
+    protected void kingOrRookHaveMove(int caseRoi, int Ta, int Th, int color) {
+        if (etats[Ta] != color * TOUR || etats[caseRoi] != color * ROI) {
+            R.unsetQ(color);
         }
-        if (etats[Th] != TOUR || etats[caseRoi] != ROI) {
-            R.unsetk();
+
+        if (etats[Th] != color * TOUR || etats[caseRoi] != color * ROI) {
+            R.unsetK(color);
         }
     }
 
-    protected void kingAndRookWhiteNotMove(int caseRoi, int Ta, int Th) {
-        if (etats[Ta] != -TOUR || etats[caseRoi] != -ROI) {
-            R.unsetQ();
-        }
-
-        if (etats[Th] != -TOUR || etats[caseRoi] != -ROI) {
-            R.unsetK();
-        }
-    }
+//    protected void kingAndRookBlackNotMove(int caseRoi, int Ta, int Th, int color) {
+//        if (etats[Ta] != color * TOUR || etats[caseRoi] != color * ROI) {
+//            R.unsetQ(color);
+//        }
+//        if (etats[Th] != color * TOUR || etats[caseRoi] != color * ROI) {
+//            R.unsetK(color);
+//        }
+//    }
 
     void setKQkq(boolean[] roq) {
         roques[0] = roq[0];

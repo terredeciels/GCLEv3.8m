@@ -121,10 +121,10 @@ public interface ICodage {
 
     class Roque {
 
-         boolean[] roques;
+        boolean[] roques;
 
         public Roque() {
-            roques=new boolean[4];
+            roques = new boolean[4];
         }
 
         /*
@@ -133,18 +133,18 @@ public interface ICodage {
         k petit roque noir
         q grand roque noir
          */
-         void set(boolean K, boolean Q, boolean k, boolean q) {
+        void set(boolean K, boolean Q, boolean k, boolean q) {
             roques[0] = K;
             roques[1] = Q;
             roques[2] = k;
             roques[3] = q;
         }
 
-         void setK(boolean K) {
+        void setK(boolean K) {
             roques[0] = K;
         }
 
-         void unsetRoque(int color) {
+        void unsetRoque(int color) {
             if (color == BLANC) {
                 unsetKQ();
             } else if (color == NOIR) {
@@ -152,30 +152,48 @@ public interface ICodage {
             }
         }
 
-         void unsetK() {
-            roques[0] = false;
-        }
-
-         void unsetQ() {
-            roques[1] = false;
-        }
-
-         void unsetKQ() {
+        void unsetKQ() {
             roques[0] = false;
             roques[1] = false;
         }
 
-         void unsetkq() {
+        void unsetkq() {
             roques[2] = false;
             roques[3] = false;
         }
 
-         void unsetk() {
+        void unsetK(int color) {
+            if (color == BLANC) {
+                unsetK();
+            } else if (color == NOIR) {
+                unsetk();
+            }
+
+        }
+
+        void unsetQ(int color) {
+            if (color == BLANC) {
+                unsetQ();
+            } else if (color == NOIR) {
+                unsetq();
+            }
+        }
+
+        void unsetK() {
+            roques[0] = false;
+        }
+
+        void unsetQ() {
+            roques[1] = false;
+        }
+
+        void unsetk() {
             roques[2] = false;
         }
 
-         void unsetq() {
+        void unsetq() {
             roques[3] = false;
         }
+
     }
 }
