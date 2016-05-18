@@ -4,10 +4,6 @@ public class UndoGCoups {
 
     final int[] etats;
     boolean[] roques;
-//    boolean droitPetitRoqueNoir;
-//    boolean droitGrandRoqueNoir;
-//    boolean droitPetitRoqueBlanc;
-//    boolean droitGrandRoqueBlanc;
 
     int caseEP;
 

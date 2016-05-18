@@ -6,7 +6,6 @@ import org.apache.commons.collections.iterators.ArrayIterator;
 import org.chesspresso.Chess;
 import org.chesspresso.move.Move;
 import org.chesspresso.position.Position;
-import static position.ICodage.Roque.*;
 
 public class FenToGPosition implements ICodage {
 
@@ -44,17 +43,12 @@ public class FenToGPosition implements ICodage {
 
         // cp_roques - cf note_tad.txt
         int cp_roques = position.getCastles();
-    
-
+   
         gp.roques[0] = (2 & cp_roques) == 2;
         gp.roques[1] = (1 & cp_roques) == 1;
         gp.roques[2] = (8 & cp_roques) == 8;
         gp.roques[3] = (4 & cp_roques) == 4;
 
-//        gp.droitPetitRoqueNoir = (8 & cp_roques) == 8;
-//        gp.droitGrandRoqueNoir = (4 & cp_roques) == 4;
-//        gp.droitPetitRoqueBlanc = (2 & cp_roques) == 2;
-//        gp.droitGrandRoqueBlanc = (1 & cp_roques) == 1;
         gp.caseEP = position.getSqiEP() == PAS_DE_CASE ? -1 : CASES117[position.getSqiEP()];
 
         return gp;
