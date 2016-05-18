@@ -13,10 +13,10 @@ public class GPositionMove {
     int[] etats;
     int trait;
 
-    public boolean exec(GCoups gcoups, UndoGCoups ui) {
-        arraycopy(etats, 0, ui.etats, 0, NB_CELLULES);
-        ui.setKQkq(roques);
-        ui.caseEP = caseEP;
+    public boolean exec(GCoups gcoups, UndoGCoups ug) {
+        arraycopy(etats, 0, ug.etats, 0, NB_CELLULES);
+        ug.setKQkq(roques);
+        ug.caseEP = caseEP;
         int caseO = gcoups.getCaseO();
         int caseX = gcoups.getCaseX();
         caseEP = -1;
@@ -65,10 +65,10 @@ public class GPositionMove {
         return true;
     }
 
-    public void unexec(UndoGCoups ui) {
-        arraycopy(ui.etats, 0, etats, 0, NB_CELLULES);
-        arraycopy(ui.roques, 0, roques, 0, 4);
-        caseEP = ui.caseEP;
+    public void unexec(UndoGCoups ug) {
+        arraycopy(ug.etats, 0, etats, 0, NB_CELLULES);
+        arraycopy(ug.roques, 0, roques, 0, 4);
+        caseEP = ug.caseEP;
         trait = -trait;
     }
 
