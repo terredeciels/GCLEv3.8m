@@ -1,4 +1,4 @@
-package analysis;
+package gui;
 
 import java.util.ArrayList;
 import position.FenToGPosition;
@@ -6,12 +6,12 @@ import position.GCoups;
 import position.GPosition;
 import position.ICodage;
 
-public class Analysis implements ICodage {
+public class CoupsValidesToGui implements ICodage {
 
     private final GPosition gp;
     private String message;
 
-    public Analysis(String f) {
+    public CoupsValidesToGui(String f) {
         gp = FenToGPosition.toGPosition(f);
     }
 

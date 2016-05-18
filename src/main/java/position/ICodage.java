@@ -2,6 +2,7 @@ package position;
 
 public interface ICodage {
 
+    final int INFINI = Integer.MAX_VALUE;
     final static int PAS_DE_CASE = -1;    // e.p.
     final String FEN_INITIALE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     final int BLANC = -1,
@@ -124,7 +125,7 @@ public interface ICodage {
         static boolean[] roques;
         static int trait;
 
-         Roque() {
+        Roque() {
             roques = new boolean[4];
         }
 
@@ -135,8 +136,6 @@ public interface ICodage {
         k petit roque noir
         q grand roque noir
          */
-  
-
         static void unsetRoque() {
             if (trait == BLANC) {
                 unsetKQ();

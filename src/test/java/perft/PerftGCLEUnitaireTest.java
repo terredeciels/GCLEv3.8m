@@ -114,6 +114,7 @@ public class PerftGCLEUnitaireTest {
         for (int i = 0; i < moves.size(); i++) {
             GCoups gcoups = moves.get(i);
             UndoGCoups ui = new UndoGCoups();
+            
             if (gp.exec(gcoups, ui)) {
 
                 if (gcoups.getTypeDeCoups().equals(Roque)) {

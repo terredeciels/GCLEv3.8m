@@ -1,6 +1,5 @@
 package gui;
 
-import analysis.Analysis;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import position.FenToGPosition;
@@ -20,7 +19,7 @@ public class GameView implements ICodage {
         try {
             gp = FenToGPosition.toGPosition(f);
             gui.setGuiPosition();
-            Analysis a = new Analysis(f);
+            CoupsValidesToGui a = new CoupsValidesToGui(f);
             a.start();
             gui.analysisJTextArea.setText(a.getMessage());
         } catch (IllegalArgumentException illegalArgumentException) {
