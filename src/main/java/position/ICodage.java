@@ -195,5 +195,16 @@ public interface ICodage {
             roques[3] = false;
         }
 
+        int caseTourH(int color) {
+            return color == BLANC ? h1 : h8;
+        }
+
+        int caseTourA(int color) {
+            return color == BLANC ? a1 : a8;
+        }
+
+        int caseRoi(int color) {
+            return color == BLANC ? e1 : e8;
+        }
     }
 }

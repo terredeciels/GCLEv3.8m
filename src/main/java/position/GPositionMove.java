@@ -75,41 +75,58 @@ public class GPositionMove {
         int caseO = gcoups.getCaseO();
         int piece = gcoups.getPiece();
         //piece deplacee = tour ou roi
-        if (trait == BLANC) {
-            switch (piece) {
-                case ROI:
-                    R.unsetRoque(trait);
-                    break;
-                case TOUR:
-                    if (caseO == h1) {
-                        R.unsetK(BLANC);
-                    }
-                    if (caseO == a1) {
-                        R.unsetQ(BLANC);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            kingOrRookHaveMove(e1, a1, h1, BLANC); // roi et tour à leurs places
-        } else if (trait == NOIR) {
-            switch (piece) {
-                case ROI:
-                    R.unsetRoque(trait);
-                    break;
-                case TOUR:
-                    if (caseO == h1) {
-                        R.unsetK(NOIR);
-                    }
-                    if (caseO == a1) {
-                        R.unsetQ(NOIR);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            kingOrRookHaveMove(e8, a8, h8, NOIR);
+        switch (piece) {
+            case ROI:
+                R.unsetRoque(trait);
+                break;
+            case TOUR:
+                if (caseO == R.caseTourH(trait)) {
+                    R.unsetK(trait);
+                }
+                if (caseO == R.caseTourA(trait)) {
+                    R.unsetQ(trait);
+                }
+                break;
+            default:
+                break;
         }
+        // roi et tour à leurs places
+        kingOrRookHaveMove(R.caseRoi(trait), R.caseTourA(trait), R.caseTourH(trait), trait); 
+//        if (trait == BLANC) {
+//            switch (piece) {
+//                case ROI:
+//                    R.unsetRoque(trait);
+//                    break;
+//                case TOUR:
+//                    if (caseO == R.caseTourH(BLANC)) {
+//                        R.unsetK(BLANC);
+//                    }
+//                    if (caseO == R.caseTourA(BLANC)) {
+//                        R.unsetQ(BLANC);
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//            kingOrRookHaveMove(R.caseRoi(BLANC), R.caseTourA(BLANC), R.caseTourH(BLANC), BLANC); // roi et tour à leurs places
+//        } else if (trait == NOIR) {
+//            switch (piece) {
+//                case ROI:
+//                    R.unsetRoque(trait);
+//                    break;
+//                case TOUR:
+//                    if (caseO == R.caseTourH(NOIR)) {
+//                        R.unsetK(NOIR);
+//                    }
+//                    if (caseO == R.caseTourA(NOIR)) {
+//                        R.unsetQ(NOIR);
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//            kingOrRookHaveMove(R.caseRoi(NOIR), R.caseTourA(NOIR), R.caseTourH(NOIR), NOIR);
+//        }
     }
 
     protected void kingOrRookHaveMove(int caseRoi, int Ta, int Th, int color) {
@@ -130,7 +147,6 @@ public class GPositionMove {
 //            R.unsetK(color);
 //        }
 //    }
-
     void setKQkq(boolean[] roq) {
         roques[0] = roq[0];
         roques[1] = roq[1];
