@@ -18,7 +18,7 @@ public class GPosition extends GPositionMove implements ICodage {
     public GPosition() {
         etats = new int[NB_CELLULES];
         R = new Roque();
-        roques = R.roques;
+        roques = Roque.roques;
     }
 
     public ArrayList<GCoups> getCoupsValides() {

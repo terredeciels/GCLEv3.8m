@@ -121,48 +121,41 @@ public interface ICodage {
 
     class Roque {
 
-        boolean[] roques;
+        static boolean[] roques;
+        static int trait;
 
-        public Roque() {
+         Roque() {
             roques = new boolean[4];
         }
 
         /*
+        
         K petit roque blanc
         Q grand roque blanc
         k petit roque noir
         q grand roque noir
          */
-        void set(boolean K, boolean Q, boolean k, boolean q) {
-            roques[0] = K;
-            roques[1] = Q;
-            roques[2] = k;
-            roques[3] = q;
-        }
+  
 
-        void setK(boolean K) {
-            roques[0] = K;
-        }
-
-        void unsetRoque(int color) {
-            if (color == BLANC) {
+        static void unsetRoque() {
+            if (trait == BLANC) {
                 unsetKQ();
-            } else if (color == NOIR) {
+            } else if (trait == NOIR) {
                 unsetkq();
             }
         }
 
-        void unsetKQ() {
+        static void unsetKQ() {
             roques[0] = false;
             roques[1] = false;
         }
 
-        void unsetkq() {
+        static void unsetkq() {
             roques[2] = false;
             roques[3] = false;
         }
 
-        void unsetK(int color) {
+        static void unsetK(int color) {
             if (color == BLANC) {
                 unsetK();
             } else if (color == NOIR) {
@@ -171,7 +164,7 @@ public interface ICodage {
 
         }
 
-        void unsetQ(int color) {
+        static void unsetQ(int color) {
             if (color == BLANC) {
                 unsetQ();
             } else if (color == NOIR) {
@@ -179,32 +172,32 @@ public interface ICodage {
             }
         }
 
-        void unsetK() {
+        static void unsetK() {
             roques[0] = false;
         }
 
-        void unsetQ() {
+        static void unsetQ() {
             roques[1] = false;
         }
 
-        void unsetk() {
+        static void unsetk() {
             roques[2] = false;
         }
 
-        void unsetq() {
+        static void unsetq() {
             roques[3] = false;
         }
 
-        int caseTourH(int color) {
-            return color == BLANC ? h1 : h8;
+        static int caseTourH() {
+            return trait == BLANC ? h1 : h8;
         }
 
-        int caseTourA(int color) {
-            return color == BLANC ? a1 : a8;
+        static int caseTourA() {
+            return trait == BLANC ? a1 : a8;
         }
 
-        int caseRoi(int color) {
-            return color == BLANC ? e1 : e8;
+        static int caseRoi() {
+            return trait == BLANC ? e1 : e8;
         }
     }
 }
