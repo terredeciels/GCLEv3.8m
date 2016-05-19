@@ -3,59 +3,74 @@ package ia;
 import java.util.ArrayList;
 import position.GCoups;
 import position.GPosition;
+import position.ICodage;
 import position.UndoGCoups;
 
-public class IA extends GPositionEval {
+public class IA extends GPositionEval implements ICodage {
 
-    private ArrayList<GCoups> allGCoups;
-    private UndoGCoups ug;
-    private int index;
+    private final int depth;
 
-    private int eval;
-    private GCoups gcoups;
-
-    public IA(GPosition gp) {
+    public IA(GPosition gp, int depth) {
         super(gp);
-        index = 0;
+        this.depth = depth;
     }
 
-    public int alphaBeta(int depth, int alpha, int beta) {
-        if (depth == 0) {
-            return evaluate();
+    public int search() {
+        return alphaBeta(gp, 0, -INFINI, INFINI);
+    }
+
+    // Ne marche que pour les niveau pairs ?
+    private int alphaBeta(GPosition gp, int niveau, int alpha, int beta) {
+        int val, best, i, N;
+        ArrayList<GPosition> positionSuivante = new ArrayList<>();
+        if (niveau == depth) {
+            return evaluate(gp);
         }
-        genLegalMoves();
-        while (hasNextMove()) {
-            makeNextMove();
-            int val = -alphaBeta(depth - 1, -beta, -alpha);
-//            gcoups.setCoupsEval(val);
-            undoMove();
-            if (val >= beta) {
-                return beta;
-            }
-            if (val > alpha) {
-                alpha = val;
-            }
+        N = trouveCoupsValides(gp, positionSuivante);
+        if (odd(niveau)) {
+            best = INFINI;
+        } else {
+            best = -INFINI;
         }
-        return alpha;
+        for (i = 0; i < N; i++) {
+            val = alphaBeta(positionSuivante.get(i), niveau + 1, alpha, beta);
+            if (odd(niveau)) { // on minimise
+                if (val < best) {
+                    best = val;
+                    if (best < beta) {
+                        beta = best;
+                        if (alpha > beta) {
+                            return best; // coupure alpha
+                        }
+                    }
+                } else if (val > best) { // on maximise
+                    best = val;
+                    if (best > alpha) {
+                        alpha = best;
+                        if (alpha > beta) {
+                            return best; // coupure beta
+                        }
+                    }
+                }
+            }
+
+        }
+        return best;
     }
 
-    private void genLegalMoves() {
-        allGCoups = gp.getCoupsValides();
+    private int trouveCoupsValides(GPosition gp, ArrayList<GPosition> positionSuivante) {
+        ArrayList<GCoups> allMoves = gp.getCoupsValides();
+        for (GCoups gcoups : allMoves) {
+            UndoGCoups ug = new UndoGCoups();
+            gp.exec(gcoups, ug);
+            positionSuivante.add(gp);
+            gp.unexec(ug);
+        }
+        return positionSuivante.size();
+
     }
 
-    private boolean hasNextMove() {
-        return index < allGCoups.size();
+    boolean odd(int a) {
+        return a % 2 != 0;
     }
-
-    private void makeNextMove() {
-        ug = new UndoGCoups();
-        gcoups = allGCoups.get(index);
-        gp.exec(gcoups, ug);
-        index++;
-    }
-
-    private void undoMove() {
-        gp.unexec(ug);
-    }
-
 }

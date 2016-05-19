@@ -14,13 +14,10 @@ public class GGame implements ICodage {
 
     public GGame(String f) {
         gp = FenToGPosition.toGPosition(f);
-        ia = new IA(gp);
+        ia = new IA(gp, depth);
     }
 
-    public GCoups getBestMove() {
-        GCoups bestmove = null;
-        ia.alphaBeta(depth, -INFINI, INFINI);
-
-        return bestmove;
+    public int getBestMove() {
+        return ia.search();
     }
 }
