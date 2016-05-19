@@ -9,6 +9,7 @@ import position.UndoGCoups;
 public class IA extends GPositionEval implements ICodage {
 
     private final int depth;
+    private ArrayList<GPosition> positionSuivante;
 
     public IA(GPosition gp, int depth) {
         super(gp);
@@ -22,18 +23,22 @@ public class IA extends GPositionEval implements ICodage {
     // Ne marche que pour les niveau pairs ?
     private int alphaBeta(GPosition gp, int niveau, int alpha, int beta) {
         int val, best, i, N;
-        ArrayList<GPosition> positionSuivante = new ArrayList<>();
+
         if (niveau == depth) {
             return evaluate(gp);
         }
-        N = trouveCoupsValides(gp, positionSuivante);
+        N = trouveCoupsValides(gp);
         if (odd(niveau)) {
             best = INFINI;
         } else {
             best = -INFINI;
         }
         for (i = 0; i < N; i++) {
-            val = alphaBeta(positionSuivante.get(i), niveau + 1, alpha, beta);
+            GPosition pos = positionSuivante.get(i);
+            System.out.println(pos.print());
+            val = alphaBeta(pos, niveau + 1, alpha, beta);
+            System.out.println(val);
+
             if (odd(niveau)) { // on minimise
                 if (val < best) {
                     best = val;
@@ -58,7 +63,8 @@ public class IA extends GPositionEval implements ICodage {
         return best;
     }
 
-    private int trouveCoupsValides(GPosition gp, ArrayList<GPosition> positionSuivante) {
+    private int trouveCoupsValides(GPosition gp) {
+        positionSuivante = new ArrayList<>();
         ArrayList<GCoups> allMoves = gp.getCoupsValides();
         for (GCoups gcoups : allMoves) {
             UndoGCoups ug = new UndoGCoups();
