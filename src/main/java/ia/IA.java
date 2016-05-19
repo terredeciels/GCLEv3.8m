@@ -1,6 +1,7 @@
 package ia;
 
-import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import position.GCoups;
 import position.GPosition;
 import position.ICodage;
@@ -24,7 +25,7 @@ public class IA extends GPositionEval implements ICodage {
 
     private int alphabeta(int profondeur, int alpha, int beta) {
         if (end_of_game || profondeur <= 0) {
-            return evaluate();
+            return evaluate("evaluate0");
         }
         for (GCoups gcoups : gp.getCoupsValides()) {
             UndoGCoups ug = new UndoGCoups();

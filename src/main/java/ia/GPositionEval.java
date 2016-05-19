@@ -1,5 +1,6 @@
 package ia;
 
+import static org.joor.Reflect.on;
 import position.GPosition;
 import static position.ICodage.*;
 
@@ -11,8 +12,18 @@ class GPositionEval {
         this.gp = gp;
     }
 
+    int evaluate(String typeEval) {
+        return on(this).call(typeEval).get();// JOOR lib
+    }
+
+    private int evaluate1() {
+        int eval = 1;
+
+        return eval;
+    }
+
     //Le Matériel
-    int evaluate() {
+    int evaluate0() {
         int Mb = 0, Mn = 0;
         for (int caseO : CASES117) {
             int C = couleurPiece(gp, caseO);
@@ -29,7 +40,7 @@ class GPositionEval {
         return gp.getTrait() == BLANC ? Mb - Mn : Mn - Mb;
     }
 
-    private int couleurPiece(GPosition P, int caseO) {
+    private int couleurPiece(GPosition P, int caseO) {// copy abstractgenerateur
         return (P.getEtats()[caseO] < 0) ? BLANC : NOIR;
     }
 
