@@ -11,12 +11,8 @@ class GPositionEval {
         this.gp = gp;
     }
 
-     int evaluate(GPosition gp) {
-        // simpliscime
-        // cas des echecs , pat, mat
-        //Evaluation de la position / du coups
-        //valeurs des pièces sommées
-        //parcours des pièces blanches (IA) et noires de P
+    //Le Matériel
+    int evaluate() {
         int Mb = 0, Mn = 0;
         for (int caseO : CASES117) {
             int C = couleurPiece(gp, caseO);
@@ -30,8 +26,7 @@ class GPositionEval {
 
             }
         }
-
-        return Mb - Mn; // IA a les Blancs
+        return gp.getTrait() == BLANC ? Mb - Mn : Mn - Mb;
     }
 
     private int couleurPiece(GPosition P, int caseO) {

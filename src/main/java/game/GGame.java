@@ -2,6 +2,7 @@ package game;
 
 import ia.IA;
 import position.FenToGPosition;
+import position.GCoups;
 import position.GPosition;
 import position.ICodage;
 
@@ -16,7 +17,9 @@ public class GGame implements ICodage {
         ia = new IA(gp, depth);
     }
 
-    public int getBestMove() {
-        return ia.search();
+    public GCoups getMeilleurCoups() {
+        ia.search();
+        return ia.getMeilleurCoups();
     }
+
 }

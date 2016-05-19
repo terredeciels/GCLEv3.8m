@@ -9,7 +9,9 @@ import position.UndoGCoups;
 public class IA extends GPositionEval implements ICodage {
 
     private final int depth;
-    private ArrayList<GPosition> positionSuivante;
+    //TODO
+    private final boolean end_of_game = false;
+    private GCoups meilleur_coup;
 
     public IA(GPosition gp, int depth) {
         super(gp);
@@ -17,66 +19,30 @@ public class IA extends GPositionEval implements ICodage {
     }
 
     public int search() {
-        return alphaBeta(gp, 0, -INFINI, INFINI);
+        return alphabeta(depth, -INFINI, INFINI);
     }
 
-    // Ne marche que pour les niveau pairs ?
-    private int alphaBeta(GPosition gp, int niveau, int alpha, int beta) {
-        int val, best, i, N;
-
-        if (niveau == depth) {
-            return evaluate(gp);
+    private int alphabeta(int profondeur, int alpha, int beta) {
+        if (end_of_game || profondeur <= 0) {
+            return evaluate();
         }
-        N = trouveCoupsValides(gp);
-        if (odd(niveau)) {
-            best = INFINI;
-        } else {
-            best = -INFINI;
-        }
-        for (i = 0; i < N; i++) {
-            GPosition pos = positionSuivante.get(i);
-            System.out.println(pos.print());
-            val = alphaBeta(pos, niveau + 1, alpha, beta);
-            System.out.println(val);
-
-            if (odd(niveau)) { // on minimise
-                if (val < best) {
-                    best = val;
-                    if (best < beta) {
-                        beta = best;
-                        if (alpha > beta) {
-                            return best; // coupure alpha
-                        }
-                    }
-                } else if (val > best) { // on maximise
-                    best = val;
-                    if (best > alpha) {
-                        alpha = best;
-                        if (alpha > beta) {
-                            return best; // coupure beta
-                        }
-                    }
-                }
-            }
-
-        }
-        return best;
-    }
-
-    private int trouveCoupsValides(GPosition gp) {
-        positionSuivante = new ArrayList<>();
-        ArrayList<GCoups> allMoves = gp.getCoupsValides();
-        for (GCoups gcoups : allMoves) {
+        for (GCoups gcoups : gp.getCoupsValides()) {
             UndoGCoups ug = new UndoGCoups();
             gp.exec(gcoups, ug);
-            positionSuivante.add(gp);
+            int score = -alphabeta(profondeur - 1, -beta, -alpha);
             gp.unexec(ug);
+            if (score >= alpha) {
+                alpha = score;
+                meilleur_coup = gcoups;
+                if (alpha >= beta) {
+                    break;
+                }
+            }
         }
-        return positionSuivante.size();
-
+        return alpha;
     }
 
-    boolean odd(int a) {
-        return a % 2 != 0;
+    public GCoups getMeilleurCoups() {
+        return meilleur_coup;
     }
 }
