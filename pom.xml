@@ -43,10 +43,21 @@
             <artifactId>joor</artifactId>
             <version>0.9.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.fluxchess</groupId>
+            <artifactId>jcpi</artifactId>
+            <version>1.4.0</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    <repositories>
+        <repository>
+            <id>maven.fluxchess.com</id>
+            <url>http://maven.fluxchess.com/release</url>
+        </repository>
+    </repositories>
 </project>

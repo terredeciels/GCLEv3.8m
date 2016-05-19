@@ -1,0 +1,147 @@
+package uci;
+
+import com.fluxchess.jcpi.AbstractEngine;
+import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
+import com.fluxchess.jcpi.commands.EngineDebugCommand;
+import com.fluxchess.jcpi.commands.EngineInitializeRequestCommand;
+import com.fluxchess.jcpi.commands.EngineNewGameCommand;
+import com.fluxchess.jcpi.commands.EnginePonderHitCommand;
+import com.fluxchess.jcpi.commands.EngineReadyRequestCommand;
+import com.fluxchess.jcpi.commands.EngineSetOptionCommand;
+import com.fluxchess.jcpi.commands.EngineStartCalculatingCommand;
+import com.fluxchess.jcpi.commands.EngineStopCalculatingCommand;
+import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
+import com.fluxchess.jcpi.commands.ProtocolInitializeAnswerCommand;
+import com.fluxchess.jcpi.commands.ProtocolReadyAnswerCommand;
+
+public class UCI extends AbstractEngine {
+
+    private ISearch search;
+
+    private void initialize() {
+        // Create a new search
+        this.search = new Search(new Evaluation());
+    }
+
+    @Override
+    protected void quit() {
+        // Stop calculating
+        new EngineStopCalculatingCommand().accept(this);
+    }
+
+    @Override
+    public void receive(EngineInitializeRequestCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+
+        // Stop calculating
+        new EngineStopCalculatingCommand().accept(this);
+
+        initialize();
+
+        // Send the initialization commands
+        ProtocolInitializeAnswerCommand initializeCommand
+                = new ProtocolInitializeAnswerCommand("GCLE", "Auteur inconnu");
+//        for (AbstractOption option : Configuration.options) {
+//            initializeCommand.addOption(option);
+//        }
+        getProtocol().send(initializeCommand);
+    }
+
+    @Override
+    public void receive(EngineSetOptionCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        //
+    }
+
+    @Override
+    public void receive(EngineDebugCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        ProtocolInformationCommand infoCommand = new ProtocolInformationCommand();
+        if (command.debug) {
+            infoCommand.setString("Turning on debugging mode");
+        } else {
+            infoCommand.setString("Turning off debugging mode");
+        }
+        getProtocol().send(infoCommand);
+    }
+
+    @Override
+    public void receive(EngineReadyRequestCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        // Send a pong back
+        getProtocol().send(new ProtocolReadyAnswerCommand(command.token));
+    }
+
+    @Override
+    public void receive(EngineNewGameCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        // Stop calculating
+        new EngineStopCalculatingCommand().accept(this);
+    }
+
+    @Override
+    public void receive(EngineAnalyzeCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!this.search.isStopped()) {
+            this.search.stop();
+        }
+
+        // Create a new board
+//        this.board = new Hex88Board(command.board);
+        // Make all moves
+//        List<GenericMove> moveList = command.moves;
+//        for (GenericMove move : moveList) {
+//            int newMove = IntMove.convertMove(move, this.board);
+//            this.board.makeMove(newMove);
+//        }
+    }
+
+    @Override
+    public void receive(EngineStartCalculatingCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        // + parametres de search
+        this.search.start();
+    }
+
+    @Override
+    public void receive(EngineStopCalculatingCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!this.search.isStopped()) {
+            // Stop the search
+            this.search.stop();
+        }
+//          else {
+//            ChessLogger.getLogger().debug("There is no search active.");
+//        }
+    }
+
+    @Override
+    public void receive(EnginePonderHitCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!this.search.isStopped()) {
+            this.search.ponderhit();
+        }
+//         else {
+//            ChessLogger.getLogger().debug("There is no search active.");
+//        }
+    }
+
+}

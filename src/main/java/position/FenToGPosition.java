@@ -43,7 +43,7 @@ public class FenToGPosition implements ICodage {
 
         // cp_roques - cf note_tad.txt
         int cp_roques = position.getCastles();
-   
+
         gp.roques[0] = (2 & cp_roques) == 2;
         gp.roques[1] = (1 & cp_roques) == 1;
         gp.roques[2] = (8 & cp_roques) == 8;
