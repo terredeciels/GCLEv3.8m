@@ -1,5 +1,6 @@
 package main;
 
+import com.googlecode.jctree.NodeNotFoundException;
 import game.GGame;
 import position.GCoups;
 import position.ICodage;
@@ -8,7 +9,7 @@ public class Main {
 
     public final static boolean DEBUG = true;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NodeNotFoundException {
 //        GStart gStart = new GStart();
         String f = "r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1";
 //        f = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";

@@ -1,5 +1,7 @@
 package position;
 
+import java.util.Objects;
+
 public class GCoups implements ICodage {
 
     private final int PAS_DE_PIECE = -1;
@@ -11,7 +13,7 @@ public class GCoups implements ICodage {
     private final int piecePromotion;
     private final int caseOTour;
     private final int caseXTour;
-    private int coupsEval;
+
 
     public GCoups(int piece, int caseO, int caseX, int pieceprise, TYPE_DE_COUPS type_de_coups) {
         this.piece = piece;
@@ -102,8 +104,47 @@ public class GCoups implements ICodage {
         return piecePromotion;
     }
 
-    public void setCoupsEval(int coupsEval) {
-        this.coupsEval = coupsEval;
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + this.piece;
+        hash = 71 * hash + this.caseO;
+        hash = 71 * hash + this.caseX;
+        hash = 71 * hash + this.pieceprise;
+        hash = 71 * hash + Objects.hashCode(this.type_de_coups);
+        hash = 71 * hash + this.piecePromotion;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GCoups other = (GCoups) obj;
+        if (this.piece != other.piece) {
+            return false;
+        }
+        if (this.caseO != other.caseO) {
+            return false;
+        }
+        if (this.caseX != other.caseX) {
+            return false;
+        }
+        if (this.pieceprise != other.pieceprise) {
+            return false;
+        }
+        if (this.piecePromotion != other.piecePromotion) {
+            return false;
+        }
+        return this.type_de_coups == other.type_de_coups;
     }
 
 }
