@@ -10,7 +10,9 @@ import position.UndoGCoups;
 public class IA extends GPositionEval implements ICodage {
 
     private final int depth;
-    //TODO
+    /*
+    TODO end_of_game
+    */
     private final boolean end_of_game = false;
     private GCoups meilleur_coup;
 

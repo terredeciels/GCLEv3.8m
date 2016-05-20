@@ -3,6 +3,9 @@ package ia;
 import static org.joor.Reflect.on;
 import position.GPosition;
 import static position.ICodage.*;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
 
 class GPositionEval {
 
@@ -30,9 +33,9 @@ class GPositionEval {
             int etat = gp.getEtats()[caseO];
             if (etat != OUT && etat != VIDE) {
                 if (C == BLANC) {
-                    Mb += VALEUR_PIECE[Math.abs(etat)];
+                    Mb += PIECE_VALUES[Math.abs(etat)];
                 } else {
-                    Mn += VALEUR_PIECE[Math.abs(etat)];
+                    Mn += PIECE_VALUES[Math.abs(etat)];
                 }
 
             }

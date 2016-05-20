@@ -1,5 +1,0 @@
-package ia;
-
-class GPos {
-
-}

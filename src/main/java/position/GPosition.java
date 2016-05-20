@@ -81,6 +81,21 @@ public class GPosition extends GPositionMove implements ICodage {
         return trait;
     }
 
+    public boolean hasRoques(int color) {
+        int c = color == BLANC ? 0 : 2;
+        return roques[0 + c] || roques[1 + c];
+    }
+    
+    public boolean isPetitRoque(int color) {
+        int c = color == BLANC ? 0 : 2;
+        return roques[0 + c] ;
+    }
+  
+      public boolean isGrandRoque(int color) {
+        int c = color == BLANC ? 0 : 2;
+        return roques[1 + c];
+    }
+
     public ArrayList<String> getCoupsvalides_lan() {
         return coupsvalides_lan;
     }

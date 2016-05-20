@@ -1,34 +1,38 @@
 package ia;
 
-public class jcBoardEvaluator {
+public class GPositionEvaluatorCopy {
 
     public static final int SIDE_BLACK = 1;
     public static final int SIDE_WHITE = 0;
+    
     public static final int PAWN = 0;
     public static final int KNIGHT = 2;
     public static final int BISHOP = 4;
     public static final int ROOK = 6;
     public static final int QUEEN = 8;
     public static final int KING = 10;
+    
     public static final int WHITE_PAWN = PAWN + SIDE_WHITE;
     public static final int WHITE_KNIGHT = KNIGHT + SIDE_WHITE;
     public static final int WHITE_BISHOP = BISHOP + SIDE_WHITE;
     public static final int WHITE_ROOK = ROOK + SIDE_WHITE;
     public static final int WHITE_QUEEN = QUEEN + SIDE_WHITE;
     public static final int WHITE_KING = KING + SIDE_WHITE;
+    
     public static final int BLACK_PAWN = PAWN + SIDE_BLACK;
     public static final int BLACK_KNIGHT = KNIGHT + SIDE_BLACK;
     public static final int BLACK_BISHOP = BISHOP + SIDE_BLACK;
     public static final int BLACK_ROOK = ROOK + SIDE_BLACK;
     public static final int BLACK_QUEEN = QUEEN + SIDE_BLACK;
     public static final int BLACK_KING = KING + SIDE_BLACK;
-    public int EMPTY_SQUARE = 12;
+    
+    public static final int EMPTY_SQUARE = 12;
     public static final int ALL_PIECES = 12;
     public static final int ALL_BITBOARDS = 14;
-
+    
     public static final int CASTLE_KINGSIDE = 0;
     public static final int CASTLE_QUEENSIDE = 2;
-    // Data counters to evaluate pawn structure
+    
     int MaxPawnFileBins[];
     int MaxPawnColorBins[];
     int MaxTotalPawns;
@@ -37,18 +41,14 @@ public class jcBoardEvaluator {
     int MaxPassedPawns[];
     int MinPawnFileBins[];
     int MinMostBackward[];
-
+    private long SquareBits[];
+    private static final int[] PIECE_VALUES;
     private final int MaterialValue[];
     private final int NumPawns[];
-    private static final int[] PIECE_VALUES;
     private final long BitBoards[];
     private final boolean HasCastled[];
     private final boolean CastlingStatus[];
-    // An array of bitfields, each of which contains the single bit associated
-    // with a square in a bitboard
-    public static long SquareBits[];
-    // The "graininess" of the evaluation.  MTD(f) works a lot faster if the
-    // evaluation is relatively coarse
+
     private static final int GRAIN = 3;
 
     static {
@@ -67,7 +67,7 @@ public class jcBoardEvaluator {
         PIECE_VALUES[BLACK_KING] = 2000;
     }
 
-    public jcBoardEvaluator() {
+    public GPositionEvaluatorCopy() {
         MaxPawnFileBins = new int[8];
         MaxPawnColorBins = new int[2];
         MaxMostAdvanced = new int[8];
@@ -80,18 +80,6 @@ public class jcBoardEvaluator {
 
         NumPawns = new int[2];
         MaterialValue = new int[2];
-    }
-
-    public long GetBitBoard(int which) {
-        return BitBoards[which];
-    }
-
-    public boolean GetHasCastled(int which) {
-        return HasCastled[which];
-    }
-
-    public boolean GetCastlingStatus(int which) {
-        return CastlingStatus[which];
     }
 
     public int EvaluateQuickie(int fromWhosePerspective) {
@@ -290,14 +278,14 @@ public class jcBoardEvaluator {
                 if (GetHasCastled(SIDE_WHITE)) {
                     score += 10;
                 } // small penalty if you can still castle on both sides
-                else if (GetCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)
-                        && GetCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)) {
+                else if (getCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)
+                        && getCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)) {
                     score -= 24;
                 } // bigger penalty if you can only castle kingside
-                else if (GetCastlingStatus(SIDE_WHITE + CASTLE_KINGSIDE)) {
+                else if (getCastlingStatus(SIDE_WHITE + CASTLE_KINGSIDE)) {
                     score -= 40;
                 } // bigger penalty if you can only castle queenside
-                else if (GetCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)) {
+                else if (getCastlingStatus(SIDE_WHITE + CASTLE_QUEENSIDE)) {
                     score -= 80;
                 } // biggest penalty if you can't castle at all
                 else {
@@ -356,14 +344,14 @@ public class jcBoardEvaluator {
                 if (GetHasCastled(SIDE_BLACK)) {
                     score += 10;
                 } // small penalty if you can still castle on both sides
-                else if (GetCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)
-                        && GetCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
+                else if (getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)
+                        && getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
                     score -= 24;
                 } // bigger penalty if you can only castle kingside
-                else if (GetCastlingStatus(SIDE_BLACK + CASTLE_KINGSIDE)) {
+                else if (getCastlingStatus(SIDE_BLACK + CASTLE_KINGSIDE)) {
                     score -= 40;
                 } // bigger penalty if you can only castle queenside
-                else if (GetCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
+                else if (getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
                     score -= 80;
                 } // biggest penalty if you can't castle at all
                 else {
@@ -571,7 +559,7 @@ public class jcBoardEvaluator {
         return true;
     }
 
-    public int EvalMaterial(int side) {
+    private int EvalMaterial(int side) {
         // If both sides are equal, no need to compute anything!
         if (MaterialValue[SIDE_BLACK] == MaterialValue[SIDE_WHITE]) {
             return 0;
@@ -607,51 +595,67 @@ public class jcBoardEvaluator {
         }
     }
 
-    public int FindWhitePiece(int square) {
-        if ((BitBoards[WHITE_KING] & SquareBits[square]) != 0) {
-            return WHITE_KING;
-        }
-        if ((BitBoards[WHITE_QUEEN] & SquareBits[square]) != 0) {
-            return WHITE_QUEEN;
-        }
-        if ((BitBoards[WHITE_ROOK] & SquareBits[square]) != 0) {
-            return WHITE_ROOK;
-        }
-        if ((BitBoards[WHITE_KNIGHT] & SquareBits[square]) != 0) {
-            return WHITE_KNIGHT;
-        }
-        if ((BitBoards[WHITE_BISHOP] & SquareBits[square]) != 0) {
-            return WHITE_BISHOP;
-        }
-        if ((BitBoards[WHITE_PAWN] & SquareBits[square]) != 0) {
-            return WHITE_PAWN;
-        }
-        return EMPTY_SQUARE;
-    }
     // Look for the piece located on a specific square
+    private int FindWhitePiece(int square) {
 
-    public int FindBlackPiece(int square) {
+//        if ((BitBoards[WHITE_KING] & SquareBits[square]) != 0) {
+//            return WHITE_KING;
+//        }
+//        if ((BitBoards[WHITE_QUEEN] & SquareBits[square]) != 0) {
+//            return WHITE_QUEEN;
+//        }
+//        if ((BitBoards[WHITE_ROOK] & SquareBits[square]) != 0) {
+//            return WHITE_ROOK;
+//        }
+//        if ((BitBoards[WHITE_KNIGHT] & SquareBits[square]) != 0) {
+//            return WHITE_KNIGHT;
+//        }
+//        if ((BitBoards[WHITE_BISHOP] & SquareBits[square]) != 0) {
+//            return WHITE_BISHOP;
+//        }
+//        if ((BitBoards[WHITE_PAWN] & SquareBits[square]) != 0) {
+//            return WHITE_PAWN;
+//        }
+//        return EMPTY_SQUARE;
+        return 0;
+    }
+
+    private int FindBlackPiece(int square) {
         // Note: we look for kings first for two reasons: because it helps
         // detect check, and because there may be a phantom king (marking an
         // illegal castling move) and a rook on the same square!
-        if ((BitBoards[BLACK_KING] & SquareBits[square]) != 0) {
-            return BLACK_KING;
-        }
-        if ((BitBoards[BLACK_QUEEN] & SquareBits[square]) != 0) {
-            return BLACK_QUEEN;
-        }
-        if ((BitBoards[BLACK_ROOK] & SquareBits[square]) != 0) {
-            return BLACK_ROOK;
-        }
-        if ((BitBoards[BLACK_KNIGHT] & SquareBits[square]) != 0) {
-            return BLACK_KNIGHT;
-        }
-        if ((BitBoards[BLACK_BISHOP] & SquareBits[square]) != 0) {
-            return BLACK_BISHOP;
-        }
-        if ((BitBoards[BLACK_PAWN] & SquareBits[square]) != 0) {
-            return BLACK_PAWN;
-        }
-        return EMPTY_SQUARE;
+//        if ((BitBoards[BLACK_KING] & SquareBits[square]) != 0) {
+//            return BLACK_KING;
+//        }
+//        if ((BitBoards[BLACK_QUEEN] & SquareBits[square]) != 0) {
+//            return BLACK_QUEEN;
+//        }
+//        if ((BitBoards[BLACK_ROOK] & SquareBits[square]) != 0) {
+//            return BLACK_ROOK;
+//        }
+//        if ((BitBoards[BLACK_KNIGHT] & SquareBits[square]) != 0) {
+//            return BLACK_KNIGHT;
+//        }
+//        if ((BitBoards[BLACK_BISHOP] & SquareBits[square]) != 0) {
+//            return BLACK_BISHOP;
+//        }
+//        if ((BitBoards[BLACK_PAWN] & SquareBits[square]) != 0) {
+//            return BLACK_PAWN;
+//        }
+//        return EMPTY_SQUARE;
+        return 0;
+    }
+
+    private long GetBitBoard(int which) {
+        return BitBoards[which];
+    }
+
+    private boolean GetHasCastled(int which) {
+        return HasCastled[which];
+    }
+
+    private boolean getCastlingStatus(int which) {
+        return CastlingStatus[which];
     }
 }
+
