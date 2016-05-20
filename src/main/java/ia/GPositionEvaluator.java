@@ -8,80 +8,37 @@ import static position.ICodage.ROI;
 
 public class GPositionEvaluator implements ICodage {
 
-//    public static final int SIDE_BLACK = 1;
-//    public static final int SIDE_WHITE = 0;
     public static final int SIDE_BLACK = 0;
     public static final int SIDE_WHITE = 1;// Math.abs(BLANC)
 
-    public static final int PAWN = 0;
-    public static final int KNIGHT = 2;
-    public static final int BISHOP = 4;
-    public static final int ROOK = 6;
-    public static final int QUEEN = 8;
-    public static final int KING = 10;
-
-    public static final int WHITE_PAWN = PAWN + SIDE_WHITE;
-    public static final int WHITE_KNIGHT = KNIGHT + SIDE_WHITE;
-    public static final int WHITE_BISHOP = BISHOP + SIDE_WHITE;
-    public static final int WHITE_ROOK = ROOK + SIDE_WHITE;
-    public static final int WHITE_QUEEN = QUEEN + SIDE_WHITE;
-    public static final int WHITE_KING = KING + SIDE_WHITE;
-
-    public static final int BLACK_PAWN = PAWN + SIDE_BLACK;
-    public static final int BLACK_KNIGHT = KNIGHT + SIDE_BLACK;
-    public static final int BLACK_BISHOP = BISHOP + SIDE_BLACK;
-    public static final int BLACK_ROOK = ROOK + SIDE_BLACK;
-    public static final int BLACK_QUEEN = QUEEN + SIDE_BLACK;
-    public static final int BLACK_KING = KING + SIDE_BLACK;
-
-    public static final int EMPTY_SQUARE = 12;
-    public static final int ALL_PIECES = 12;
-    public static final int ALL_BITBOARDS = 14;
-
-    public static final int CASTLE_KINGSIDE = 0;
-    public static final int CASTLE_QUEENSIDE = 2;
-
     int MaxPawnFileBins[];
     int MaxPawnColorBins[];
-    int MaxTotalPawns;
-    int PawnRams;
     int MaxMostAdvanced[];
     int MaxPassedPawns[];
     int MinPawnFileBins[];
     int MinMostBackward[];
-    private long SquareBits[];
+    int MaterialValue[];
+    int NumPawns[];
+    int MaxTotalPawns;
+    int PawnRams;
 
-    private final int MaterialValue[];
-    private final int NumPawns[];
-    private long BitBoards[];
-    private boolean HasCastled[];
-    private boolean CastlingStatus[];
+    int GRAIN = 3;
 
-    private static final int GRAIN = 3;
+    private final GPosition gp;
 
-    public GPositionEvaluator() {
+    public GPositionEvaluator(GPosition gp) {
+        this.gp = gp;
         MaxPawnFileBins = new int[8];
         MaxPawnColorBins = new int[2];
         MaxMostAdvanced = new int[8];
         MaxPassedPawns = new int[8];
         MinPawnFileBins = new int[8];
         MinMostBackward = new int[8];
-        BitBoards = new long[ALL_BITBOARDS];
-        CastlingStatus = new boolean[4];
-        HasCastled = new boolean[2];
 
         NumPawns = new int[2];
         MaterialValue = new int[2];
-
-    }
-    private GPosition gp;
-    private int couleur;
-
-    public GPositionEvaluator(GPosition gp) {
-        this.gp = gp;
         NumPawns = new int[2];
         MaterialValue = new int[2];
-        couleur = gp.getTrait(); // ?
         getMaterielValue();
     }
 
@@ -90,7 +47,7 @@ public class GPositionEvaluator implements ICodage {
     }
 
     public int EvaluateComplete(int noirsOuBlancs) {
-//        AnalyzePawnStructure(noirsOuBlancs);
+        AnalyzePawnStructure(noirsOuBlancs);
 
         return (((EvalMaterial(noirsOuBlancs)
                 //                + EvalPawnStructure(noirsOuBlancs)
@@ -100,50 +57,9 @@ public class GPositionEvaluator implements ICodage {
                 + EvalKingTropism(noirsOuBlancs)) >> GRAIN) << GRAIN);
     }
 
-    private int fCaseRoi(GPosition position, int couleur) {
-        int[] pEtats = position.getEtats();
-        int caseRoi = OUT;
-        int etatO;
-        int typeO;
-        for (int caseO : CASES117) {
-            etatO = pEtats[caseO];
-            typeO = Math.abs(etatO);
-            if ((typeO == ROI) && (etatO * couleur > 0)) {
-                caseRoi = caseO;
-                break;
-            }
-        }
-        return caseRoi;
-    }
-
-    private int couleurPiece(int caseO) {
-        return (gp.getEtats()[caseO] < 0) ? BLANC : NOIR;
-    }
-
-    private int typeDePiece(int caseO) {
-        return (gp.getEtats()[caseO] < 0) ? -gp.getEtats()[caseO] : gp.getEtats()[caseO];
-    }
-
-    private boolean rangFinal(int caseX, int couleur) {
-        if ((caseX >= a1) && (caseX <= h1) && (couleur == NOIR)) {
-            return true;
-        } else {
-            return (caseX >= a8) && (caseX <= h8) && (couleur == BLANC);
-        }
-    }
-
-    private boolean rang7(int caseX, int couleur) {
-        if ((caseX >= a2) && (caseX <= h2) && (couleur == NOIR)) {
-            return true;
-        } else {
-            return (caseX >= a7) && (caseX <= h7) && (couleur == BLANC);
-        }
-    }
-
     private int EvalKingTropism(int noirsOuBlancs) {
         int score = 0;
         if (noirsOuBlancs == BLANC) {//SIDE_WHITE
-
             // Look for enemy king first!
             int _caseRoi = fCaseRoi(gp, BLANC);
             int kingRow = _caseRoi >> 8;
@@ -217,43 +133,15 @@ public class GPositionEvaluator implements ICodage {
     }
 
     private int EvalRookBonus(int noirsOuBlancs) {
-        if (!isTour(noirsOuBlancs)) {
-            return 0;
-        }
-        /*
-        @TODO is tour ?
-         */
-//        long rookboard = GetBitBoard(ROOK + noirsOuBlancs);
-//        // is tour ?
-//        if (rookboard == 0) {
-//            return 0;
-//        }
         int score = 0;
         for (int caseO : CASES117) {
             int _case = INDICECASES[caseO];//0 a 63
-            //verifier
-            int pieceRow = _case >> 8;
-            int pieceColumn = _case % 8;
-//        for (int square = 0; square < 64; square++) {
-
-            // Find a rook
             if (typeDePiece(caseO) == TOUR) {
-//            if ((rookboard & SquareBits[square]) != 0) {
-
                 // Is this rook on the seventh rank?
-//                int rank = (square >> 3);
                 int file = (_case % 8);
                 if (rang7(caseO, noirsOuBlancs)) {
                     score += 22;
                 }
-//               if(rangFinal(caseO,NOIR)) score += 22;
-
-//                if ((noirsOuBlancs == BLANC) && (rank == 1)) {
-//                    score += 22;
-//                }
-//                if ((noirsOuBlancs == NOIR) && (rank == 7)) {
-//                    score += 22;
-//                }
                 // Is this rook on a semi- or completely open file?
                 if (MaxPawnFileBins[file] == 0) {
                     if (MinPawnFileBins[file] == 0) {
@@ -273,12 +161,6 @@ public class GPositionEvaluator implements ICodage {
 //                if ((noirsOuBlancs == SIDE_BLACK) && (MaxPassedPawns[file] > square)) {
 //                    score += 25;
 //                }
-                // Use the bitboard erasure trick to avoid looking for additional
-                // rooks once they have all been seen
-//                rookboard ^= SquareBits[square];
-//                if (rookboard == 0) {
-//                    break;
-//                }
             }
         }
         return score;
@@ -295,12 +177,6 @@ public class GPositionEvaluator implements ICodage {
             if (typeDePiece(d2) == PION && couleurPiece(d2) == BLANC) {
                 score -= 15;
             }
-//            if (FindWhitePiece(51) == WHITE_PAWN) {
-//                score -= 15;
-//            }
-//            if (FindWhitePiece(52) == WHITE_PAWN) {
-//                score -= 15;
-//            }
 
             // Penalize bishops and knights on the back rank
             for (int square = a8; square <= h8; square++) {//verif
@@ -308,9 +184,6 @@ public class GPositionEvaluator implements ICodage {
                         && (typeDePiece(square) == CAVALIER || typeDePiece(square) == FOU)) {
                     score -= 10;
                 }
-//                if ((FindWhitePiece(square) == WHITE_KNIGHT) || (FindWhitePiece(square) == WHITE_BISHOP)) {
-//                    score -= 10;
-//                }
             }
 
             /*
@@ -345,19 +218,14 @@ public class GPositionEvaluator implements ICodage {
 //            }
             // And finally, incite castling when the enemy has a queen on the board
             // This is a slightly simpler version of a factor used by Cray Blitz
-//            if (GetBitBoard(BLACK_QUEEN) != 0) {
-            if (isDAME(NOIR)) {
+            if (isDame(NOIR)) {
                 // Being castled deserves a bonus
                 if (gp.hasRoques(BLANC)) {
-//                if (GetHasCastled(SIDE_WHITE)) {
                     score += 10;
-                } /* 
-                    @TODO VERIF small penalty if you can still castle on both sides
-                 */ else if (gp.isGrandRoque(BLANC) && gp.isPetitRoque(BLANC)) {
+                } else if (gp.isGrandRoque(BLANC) && gp.isPetitRoque(BLANC)) {
                     score -= 24;
                 } // bigger penalty if you can only castle kingside
                 else if (gp.isPetitRoque(BLANC)) {
-//                    if (getCastlingStatus(SIDE_WHITE + CASTLE_KINGSIDE)) {
                     score -= 40;
                 } // bigger penalty if you can only castle queenside
                 else if (gp.isGrandRoque(BLANC)) {
@@ -376,26 +244,12 @@ public class GPositionEvaluator implements ICodage {
             if (typeDePiece(d7) == PION && couleurPiece(d7) == NOIR) {
                 score -= 15;
             }
-//            if (FindBlackPiece(11) == BLACK_PAWN) {
-//                score -= 15;
-//            }
-//            if (FindBlackPiece(12) == BLACK_PAWN) {
-//                score -= 15;
-//            }
-
             // Penalize bishops and knights on the back rank
             for (int square = a8; square <= h8; square++) {//verif
                 if (couleurPiece(square) == NOIR
                         && (typeDePiece(square) == CAVALIER || typeDePiece(square) == FOU)) {
                     score -= 10;
                 }
-//            for (int square = 0; square < 8; square++) {
-//                if ((FindBlackPiece(square) == BLACK_KNIGHT)
-//                        || (FindBlackPiece(square) == BLACK_BISHOP)) {
-//                    score -= 10;
-//                }
-//            }
-
                 /*
             @TODO Penalize too-early queen movement (black)
                  */
@@ -426,18 +280,14 @@ public class GPositionEvaluator implements ICodage {
 //                }
 //                score -= (cnt << 3);
 //            }
-                if (isDAME(BLANC)) {
+                if (isDame(BLANC)) {
                     // Being castled deserves a bonus
                     if (gp.hasRoques(NOIR)) {
-//                if (GetHasCastled(SIDE_WHITE)) {
                         score += 10;
-                    } /* 
-                    @TODO VERIF small penalty if you can still castle on both sides
-                     */ else if (gp.isGrandRoque(NOIR) && gp.isPetitRoque(NOIR)) {
+                    } else if (gp.isGrandRoque(NOIR) && gp.isPetitRoque(NOIR)) {
                         score -= 24;
                     } // bigger penalty if you can only castle kingside
                     else if (gp.isPetitRoque(NOIR)) {
-//                    if (getCastlingStatus(SIDE_WHITE + CASTLE_KINGSIDE)) {
                         score -= 40;
                     } // bigger penalty if you can only castle queenside
                     else if (gp.isGrandRoque(NOIR)) {
@@ -447,25 +297,6 @@ public class GPositionEvaluator implements ICodage {
                         score -= 120;
                     }
                 }
-//                if (GetBitBoard(WHITE_QUEEN) != 0) {
-//                    // Being castled deserves a bonus
-//                    if (GetHasCastled(SIDE_BLACK)) {
-//                        score += 10;
-//                    } // small penalty if you can still castle on both sides
-//                    else if (getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)
-//                            && getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
-//                        score -= 24;
-//                    } // bigger penalty if you can only castle kingside
-//                    else if (getCastlingStatus(SIDE_BLACK + CASTLE_KINGSIDE)) {
-//                        score -= 40;
-//                    } // bigger penalty if you can only castle queenside
-//                    else if (getCastlingStatus(SIDE_BLACK + CASTLE_QUEENSIDE)) {
-//                        score -= 80;
-//                    } // biggest penalty if you can't castle at all
-//                    else {
-//                        score -= 120;
-//                    }
-//                }
             }
 
         }
@@ -474,27 +305,19 @@ public class GPositionEvaluator implements ICodage {
 
     private int EvalBadBishops(int noirsOuBlancs) {
 
-        if (!isFOU(noirsOuBlancs)) {
-            return 0;
-        }
-//        long where = GetBitBoard(BISHOP + noirsOuBlancs);
-//        if (where == 0) {
+//        if (!isFOU(noirsOuBlancs)) {
 //            return 0;
 //        }
-
         int score = 0;
         for (int caseO : CASES117) {
             int square = INDICECASES[caseO];//0 a 63
-//        for (int square = 0; square < 64; square++) {
             // Find a bishop
             if (typeDePiece(caseO) == FOU) {
-//            if ((where & SquareBits[square]) != 0) {
+
                 // What is the bishop's square color?
                 /*
                 @TODO square color
                  */
-                //SQUARE COLOR
-
                 int rank = (square >> 3);
                 int file = (square % 8);
                 if ((rank % 2) == (file % 2)) {
@@ -516,180 +339,9 @@ public class GPositionEvaluator implements ICodage {
         }
         return score;
     }
-//
-//    private int EvalPawnStructure(int noirsOuBlancs) {
-//        int score = 0;
-//
-//        // First, look for doubled pawns
-//        // In chess, two or more pawns on the same file usually hinder each other,
-//        // so we assign a minor penalty
-//        for (int bin = 0; bin < 8; bin++) {
-//            if (MaxPawnFileBins[bin] > 1) {
-//                score -= 8;
-//            }
-//        }
-//
-//        // Now, look for an isolated pawn, i.e., one which has no neighbor pawns
-//        // capable of protecting it from attack at some point in the future
-//        if ((MaxPawnFileBins[0] > 0) && (MaxPawnFileBins[1] == 0)) {
-//            score -= 15;
-//        }
-//        if ((MaxPawnFileBins[7] > 0) && (MaxPawnFileBins[6] == 0)) {
-//            score -= 15;
-//        }
-//        for (int bin = 1; bin < 7; bin++) {
-//            if ((MaxPawnFileBins[bin] > 0) && (MaxPawnFileBins[bin - 1] == 0)
-//                    && (MaxPawnFileBins[bin + 1] == 0)) {
-//                score -= 15;
-//            }
-//        }
-//
-//        // Assign a small penalty to positions in which Max still has all of his
-//        // pawns; this incites a single pawn trade (to open a file), but not by
-//        // much
-//        if (MaxTotalPawns == 8) {
-//            score -= 10;
-//        }
-//
-//        // Penalize pawn rams, because they restrict movement
-//        score -= 8 * PawnRams;
-//
-//        // Finally, look for a passed pawn; i.e., a pawn which can no longer be
-//        // blocked or attacked by a rival pawn
-//        if (noirsOuBlancs == SIDE_WHITE) {
-//            if (MaxMostAdvanced[0] < Math.min(MinMostBackward[0], MinMostBackward[1])) {
-//                score += (8 - (MaxMostAdvanced[0] >> 3))
-//                        * (8 - (MaxMostAdvanced[0] >> 3));
-//            }
-//            if (MaxMostAdvanced[7] < Math.min(MinMostBackward[7], MinMostBackward[6])) {
-//                score += (8 - (MaxMostAdvanced[7] >> 3))
-//                        * (8 - (MaxMostAdvanced[7] >> 3));
-//            }
-//            for (int i = 1; i < 7; i++) {
-//                if ((MaxMostAdvanced[i] < MinMostBackward[i])
-//                        && (MaxMostAdvanced[i] < MinMostBackward[i - 1])
-//                        && (MaxMostAdvanced[i] < MinMostBackward[i + 1])) {
-//                    score += (8 - (MaxMostAdvanced[i] >> 3))
-//                            * (8 - (MaxMostAdvanced[i] >> 3));
-//                }
-//            }
-//        } else // from Black's perspective
-//        {
-//            if (MaxMostAdvanced[0] > Math.max(MinMostBackward[0], MinMostBackward[1])) {
-//                score += (MaxMostAdvanced[0] >> 3)
-//                        * (MaxMostAdvanced[0] >> 3);
-//            }
-//            if (MaxMostAdvanced[7] > Math.max(MinMostBackward[7], MinMostBackward[6])) {
-//                score += (MaxMostAdvanced[7] >> 3)
-//                        * (MaxMostAdvanced[7] >> 3);
-//            }
-//            for (int i = 1; i < 7; i++) {
-//                if ((MaxMostAdvanced[i] > MinMostBackward[i])
-//                        && (MaxMostAdvanced[i] > MinMostBackward[i - 1])
-//                        && (MaxMostAdvanced[i] > MinMostBackward[i + 1])) {
-//                    score += (MaxMostAdvanced[i] >> 3)
-//                            * (MaxMostAdvanced[i] >> 3);
-//                }
-//            }
-//        }
-//
-//        return score;
-//    }
-//
-//    private boolean AnalyzePawnStructure(int noirsOuBlancs) {
-//        // Reset the counters
-//        for (int i = 0; i < 8; i++) {
-//            MaxPawnFileBins[i] = 0;
-//            MinPawnFileBins[i] = 0;
-//        }
-//        MaxPawnColorBins[0] = 0;
-//        MaxPawnColorBins[1] = 0;
-//        PawnRams = 0;
-//        MaxTotalPawns = 0;
-//
-//        // Now, perform the analysis
-//        if (noirsOuBlancs == SIDE_WHITE) {
-//            for (int i = 0; i < 8; i++) {
-//                MaxMostAdvanced[i] = 63;
-//                MinMostBackward[i] = 63;
-//                MaxPassedPawns[i] = 63;
-//            }
-//
-//            for (int square = 55; square >= 8; square--) {
-//                int caseO;
-//                // Look for a white pawn first, and count its properties
-//                if (couleurPiece(caseO) == BLANC && typeDePiece(caseO) == PION) {
-////                if (FindWhitePiece(square) == WHITE_PAWN) {
-//                    // What is the pawn's position, in rank-file terms?
-//                    int rank = square >> 3;
-//                    int file = square % 8;
-//
-//                    // This pawn is now the most advanced of all white pawns on its file
-//                    MaxPawnFileBins[file]++;
-//                    MaxTotalPawns++;
-//                    MaxMostAdvanced[file] = square;
-//
-//                    // Is this pawn on a white or a black square?
-//                    if ((rank % 2) == (file % 2)) {
-//                        MaxPawnColorBins[0]++;
-//                    } else {
-//                        MaxPawnColorBins[1]++;
-//                    }
-//
-//                    // Look for a "pawn ram", i.e., a situation where a black pawn
-//                    // is located in the square immediately ahead of this one.
-//                    if (FindBlackPiece(square - 8) == BLACK_PAWN) {
-//                        PawnRams++;
-//                    }
-//                } // Now, look for a BLACK pawn
-//                else if (FindBlackPiece(square) == BLACK_PAWN) {
-//                    // If the black pawn exists, it is the most backward found so far
-//                    // on its file
-//                    int file = square % 8;
-//                    MinPawnFileBins[file]++;
-//                    MinMostBackward[file] = square;
-//                }
-//            }
-//        } else // Analyze from Black's perspective
-//        {
-//            for (int i = 0; i < 8; i++) {
-//                MaxMostAdvanced[i] = 0;
-//                MaxPassedPawns[i] = 0;
-//                MinMostBackward[i] = 0;
-//            }
-//            for (int square = 8; square < 56; square++) {
-//                if (FindBlackPiece(square) == BLACK_PAWN) {
-//                    // What is the pawn's position, in rank-file terms?
-//                    int rank = square >> 3;
-//                    int file = square % 8;
-//
-//                    // This pawn is now the most advanced of all white pawns on its file
-//                    MaxPawnFileBins[file]++;
-//                    MaxTotalPawns++;
-//                    MaxMostAdvanced[file] = square;
-//
-//                    if ((rank % 2) == (file % 2)) {
-//                        MaxPawnColorBins[0]++;
-//                    } else {
-//                        MaxPawnColorBins[1]++;
-//                    }
-//
-//                    if (FindWhitePiece(square + 8) == WHITE_PAWN) {
-//                        PawnRams++;
-//                    }
-//                } else if (FindWhitePiece(square) == WHITE_PAWN) {
-//                    int file = square % 8;
-//                    MinPawnFileBins[file]++;
-//                    MinMostBackward[file] = square;
-//                }
-//            }
-//        }
-//        return true;
-//    }
 
     private int EvalMaterial(int side) {
         // If both sides are equal, no need to compute anything!
-
         if (MaterialValue[SIDE_BLACK] == MaterialValue[SIDE_WHITE]) {
             return 0;
         }
@@ -729,30 +381,7 @@ public class GPositionEvaluator implements ICodage {
         }
     }
 
-    // Look for the piece located on a specific square
-    private int FindWhitePiece(int square) {
-        return 0;
-    }
-
-    private int FindBlackPiece(int square) {
-        return 0;
-    }
-
-    private long GetBitBoard(int which) {
-        return BitBoards[which];
-    }
-
-    private boolean GetHasCastled(int which) {
-        return HasCastled[which];
-    }
-
-    private boolean getCastlingStatus(int which) {
-        return CastlingStatus[which];
-    }
-
     private void getMaterielValue() {
-//        int[] MaterialValue = new int[2];
-//        int[] NumPawns = new int[2];
         for (int caseO : CASES117) {
             int typeDePiece = typeDePiece(caseO);
             MaterialValue[Math.abs(couleurPiece(caseO))] += PIECE_VALUES[typeDePiece];
@@ -765,24 +394,146 @@ public class GPositionEvaluator implements ICodage {
 
     }
 
-    private int[] getMaxPawnFileBins() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private boolean AnalyzePawnStructure(int noirsOuBlancs) {
+        // Reset the counters
+        for (int i = 0; i < 8; i++) {
+            MaxPawnFileBins[i] = 0;
+            MinPawnFileBins[i] = 0;
+        }
+        MaxPawnColorBins[0] = 0;
+        MaxPawnColorBins[1] = 0;
+        PawnRams = 0;
+        MaxTotalPawns = 0;
+
+        // Now, perform the analysis
+        if (noirsOuBlancs == SIDE_WHITE) {
+            for (int i = 0; i < 8; i++) {
+                MaxMostAdvanced[i] = 63;
+                MinMostBackward[i] = 63;
+                MaxPassedPawns[i] = 63;
+            }
+
+            for (int square = 55; square >= 8; square--) {
+                int caseO = CASES117[square];
+                // Look for a white pawn first, and count its properties
+                if (couleurPiece(caseO) == BLANC && typeDePiece(caseO) == PION) {
+
+                    // What is the pawn's position, in rank-file terms?
+                    int rank = square >> 3;
+                    int file = square % 8;
+
+                    // This pawn is now the most advanced of all white pawns on its file
+                    MaxPawnFileBins[file]++;
+                    MaxTotalPawns++;
+                    MaxMostAdvanced[file] = square;
+
+                    // Is this pawn on a white or a black square?
+                    if ((rank % 2) == (file % 2)) {
+                        MaxPawnColorBins[0]++;
+                    } else {
+                        MaxPawnColorBins[1]++;
+                    }
+
+                    // Look for a "pawn ram", i.e., a situation where a black pawn
+                    // is located in the square immediately ahead of this one.
+                    if (typeDePiece(caseO - 12) == PION && couleurPiece(caseO - 12) == NOIR) {
+                        PawnRams++;
+                    }
+                } // Now, look for a BLACK pawn
+                else if (typeDePiece(caseO) == PION && couleurPiece(caseO) == NOIR) {
+                    // If the black pawn exists, it is the most backward found so far
+                    // on its file
+                    int file = square % 8;
+                    MinPawnFileBins[file]++;
+                    MinMostBackward[file] = square;
+                }
+            }
+        } else // Analyze from Black's perspective
+        {
+            for (int i = 0; i < 8; i++) {
+                MaxMostAdvanced[i] = 0;
+                MaxPassedPawns[i] = 0;
+                MinMostBackward[i] = 0;
+            }
+            for (int square = 8; square < 56; square++) {
+                int caseO = CASES117[square];
+                if (typeDePiece(caseO) == PION && couleurPiece(caseO) == NOIR) {
+
+                    // What is the pawn's position, in rank-file terms?
+                    int rank = square >> 3;
+                    int file = square % 8;
+
+                    // This pawn is now the most advanced of all white pawns on its file
+                    MaxPawnFileBins[file]++;
+                    MaxTotalPawns++;
+                    MaxMostAdvanced[file] = square;
+
+                    if ((rank % 2) == (file % 2)) {
+                        MaxPawnColorBins[0]++;
+                    } else {
+                        MaxPawnColorBins[1]++;
+                    }
+                    if (typeDePiece(caseO + 12) == PION && couleurPiece(caseO + 12) == BLANC) {
+                        PawnRams++;
+                    }
+                } else if (typeDePiece(caseO + 12) == PION && couleurPiece(caseO + 12) == BLANC) {
+
+                    int file = square % 8;
+                    MinPawnFileBins[file]++;
+                    MinMostBackward[file] = square;
+                }
+            }
+        }
+        return true;
     }
 
-    private int[] getMinPawnFileBins() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private boolean isDame(int color) {
+        for (int caseO : CASES117) {
+            if (typeDePiece(caseO) == DAME && couleurPiece(caseO) == color) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private boolean isDAME(int BLANC) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private int fCaseRoi(GPosition position, int couleur) {
+        int[] pEtats = position.getEtats();
+        int caseRoi = OUT;
+        int etatO;
+        int typeO;
+        for (int caseO : CASES117) {
+            etatO = pEtats[caseO];
+            typeO = Math.abs(etatO);
+            if ((typeO == ROI) && (etatO * couleur > 0)) {
+                caseRoi = caseO;
+                break;
+            }
+        }
+        return caseRoi;
     }
 
-    private boolean isTour(int noirsOuBlancs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private int couleurPiece(int caseO) {
+        return (gp.getEtats()[caseO] < 0) ? BLANC : NOIR;
     }
 
-    private boolean isFOU(int noirsOuBlancs) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private int typeDePiece(int caseO) {
+        return (gp.getEtats()[caseO] < 0) ? -gp.getEtats()[caseO] : gp.getEtats()[caseO];
+    }
+
+    private boolean rangFinal(int caseX, int couleur) {
+        if ((caseX >= a1) && (caseX <= h1) && (couleur == NOIR)) {
+            return true;
+        } else {
+            return (caseX >= a8) && (caseX <= h8) && (couleur == BLANC);
+        }
+    }
+
+    private boolean rang7(int caseX, int couleur) {
+        if ((caseX >= a2) && (caseX <= h2) && (couleur == NOIR)) {
+            return true;
+        } else {
+            return (caseX >= a7) && (caseX <= h7) && (couleur == BLANC);
+        }
     }
 
 }
