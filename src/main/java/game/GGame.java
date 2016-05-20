@@ -22,4 +22,8 @@ public class GGame implements ICodage {
         return ia.getMeilleurCoups();
     }
 
+    public GPosition getGPosition() {
+        return gp;
+    }
+
 }

@@ -27,7 +27,7 @@ public class IA extends GPositionEval implements ICodage {
 
     private int alphabeta(int profondeur, int alpha, int beta) {
         if (end_of_game || profondeur <= 0) {
-            return evaluate("evaluate0");
+            return evaluate("evaluate1");
         }
         for (GCoups gcoups : gp.getCoupsValides()) {
             UndoGCoups ug = new UndoGCoups();

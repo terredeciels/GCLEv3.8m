@@ -8,8 +8,8 @@ import static position.ICodage.ROI;
 
 public class GPositionEvaluator implements ICodage {
 
-    public static final int SIDE_BLACK = 0;
-    public static final int SIDE_WHITE = 1;// Math.abs(BLANC)
+    int SIDE_BLACK = 1;
+    int SIDE_WHITE = 0;
 
     int MaxPawnFileBins[];
     int MaxPawnColorBins[];
@@ -42,11 +42,13 @@ public class GPositionEvaluator implements ICodage {
         getMaterielValue();
     }
 
-    public int EvaluateQuick(int noirsOuBlancs) {
+    public int evaluateQuick(int noirsOuBlancs) {
+        noirsOuBlancs = noirsOuBlancs == BLANC ? SIDE_WHITE : SIDE_BLACK;
         return ((EvalMaterial(noirsOuBlancs) >> GRAIN) << GRAIN);
     }
 
-    public int EvaluateComplete(int noirsOuBlancs) {
+    public int evaluateComplete(int noirsOuBlancs) {
+        noirsOuBlancs = noirsOuBlancs == BLANC ? SIDE_WHITE : SIDE_BLACK;
         AnalyzePawnStructure(noirsOuBlancs);
 
         return (((EvalMaterial(noirsOuBlancs)
@@ -168,7 +170,7 @@ public class GPositionEvaluator implements ICodage {
 
     private int EvalDevelopment(int noirsOuBlancs) {
         int score = 0;
-
+//  noirsOuBlancs = noirsOuBlancs == BLANC ? SIDE_WHITE : SIDE_BLACK;
         if (noirsOuBlancs == SIDE_WHITE) {
             // Has the machine advanced its center pawns?
             if (typeDePiece(e2) == PION && couleurPiece(e2) == BLANC) {
@@ -341,6 +343,7 @@ public class GPositionEvaluator implements ICodage {
     }
 
     private int EvalMaterial(int side) {
+
         // If both sides are equal, no need to compute anything!
         if (MaterialValue[SIDE_BLACK] == MaterialValue[SIDE_WHITE]) {
             return 0;
@@ -382,13 +385,14 @@ public class GPositionEvaluator implements ICodage {
     }
 
     private void getMaterielValue() {
+
         for (int caseO : CASES117) {
             int typeDePiece = typeDePiece(caseO);
-            MaterialValue[Math.abs(couleurPiece(caseO))] += PIECE_VALUES[typeDePiece];
-            // 0 = NOIRS
-            // -1 -> 1 = BLANCS
+            int couleurPiece = couleurPiece(caseO) == BLANC ? SIDE_WHITE : SIDE_BLACK;
+            MaterialValue[couleurPiece] += PIECE_VALUES[typeDePiece];
+
             if (typeDePiece == PION) {
-                NumPawns[Math.abs(couleurPiece(caseO))]++;
+                NumPawns[couleurPiece]++;
             }
         }
 

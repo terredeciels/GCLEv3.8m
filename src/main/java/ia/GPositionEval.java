@@ -6,6 +6,18 @@ import static position.ICodage.*;
 import static org.joor.Reflect.on;
 import static org.joor.Reflect.on;
 import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
+import static org.joor.Reflect.on;
 
 class GPositionEval {
 
@@ -20,7 +32,9 @@ class GPositionEval {
     }
 
     private int evaluate1() {
-        int eval = 1;
+        int eval;
+        GPositionEvaluator gPositionEvaluator = new GPositionEvaluator(gp);
+        eval = gPositionEvaluator.evaluateComplete(gp.getTrait());
 
         return eval;
     }
