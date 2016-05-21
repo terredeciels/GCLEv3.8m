@@ -1,8 +1,8 @@
 package position;
 
+import gcle.Gcle;
 import java.util.ArrayList;
 import java.util.Collections;
-import main.Main;
 import org.chesspresso.position.Position;
 import static position.ICodage.*;
 
@@ -85,13 +85,13 @@ public class GPosition extends GPositionMove implements ICodage {
         int c = color == BLANC ? 0 : 2;
         return roques[0 + c] || roques[1 + c];
     }
-    
+
     public boolean isPetitRoque(int color) {
         int c = color == BLANC ? 0 : 2;
-        return roques[0 + c] ;
+        return roques[0 + c];
     }
-  
-      public boolean isGrandRoque(int color) {
+
+    public boolean isGrandRoque(int color) {
         int c = color == BLANC ? 0 : 2;
         return roques[1 + c];
     }
@@ -102,7 +102,7 @@ public class GPosition extends GPositionMove implements ICodage {
 
     @Override
     public String toString() {
-        return Main.DEBUG ? "CP_CoupsValides : " + '\n'
+        return Gcle.DEBUG ? "CP_CoupsValides : " + '\n'
                 + cp_coupsvalides_lan + '\n'
                 + "G_CoupsValides : " + '\n'
                 + coupsvalides_lan

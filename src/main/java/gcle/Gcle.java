@@ -1,4 +1,4 @@
-package uci;
+package gcle;
 
 import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
@@ -13,14 +13,47 @@ import com.fluxchess.jcpi.commands.EngineStopCalculatingCommand;
 import com.fluxchess.jcpi.commands.ProtocolInformationCommand;
 import com.fluxchess.jcpi.commands.ProtocolInitializeAnswerCommand;
 import com.fluxchess.jcpi.commands.ProtocolReadyAnswerCommand;
+import com.fluxchess.jcpi.protocols.IProtocolHandler;
+import position.GPosition;
 
-public class UCI extends AbstractEngine {
+public class Gcle extends AbstractEngine {
 
+    public final static boolean DEBUG = true;
     private ISearch search;
+    private GPosition gp;
+
+    public Gcle() {
+        // Set the protocol
+//        ChessLogger.setProtocol(getProtocol());
+
+        initialize();
+    }
+
+    public Gcle(IProtocolHandler handler) {
+        super(handler);
+
+        // Set the protocol
+//        ChessLogger.setProtocol(handler);
+        initialize();
+    }
+
+    public static void main(String[] args) {
+//        String fen = ICodage.FEN_INITIALE;
+//        GPosition gp = FenToGPosition.toGPosition(fen);
+//        GameView gameview = new GameView(gp);
+//        ChessGui gui = new ChessGui(gameview);
+//        gui.setGuiPosition();
+
+        new Gcle().run();
+    }
 
     private void initialize() {
         // Create a new search
-        this.search = new Search(new Evaluation());
+        String f = "r3k2r/8/8/8/8/8/8/4K3 w kq - 0 1";
+        f = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+//        f=ICodage.FEN_INITIALE;
+        search = new Search(f, getProtocol());
+//        System.out.println(GCoups.getString(search.getMeilleurCoups()));
     }
 
     @Override
@@ -136,9 +169,9 @@ public class UCI extends AbstractEngine {
         if (command == null) {
             throw new IllegalArgumentException();
         }
-        if (!this.search.isStopped()) {
-            this.search.ponderhit();
-        }
+//        if (!search.isStopped()) {
+//            search.ponderhit();
+//        }
 //         else {
 //            ChessLogger.getLogger().debug("There is no search active.");
 //        }

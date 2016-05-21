@@ -27,7 +27,7 @@ public interface ICodage {
     final int f3 = 55;
     final int c2 = 40, c4 = 64;
     final int g7 = 104, g6 = 92;
-    final int c3=52;
+    final int c3 = 52;
     final int[] CASES117 = {
         26, 27, 28, 29, 30, 31, 32, 33,
         38, 39, 40, 41, 42, 43, 44, 45,

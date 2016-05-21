@@ -1,4 +1,4 @@
-package uci;
+package gcle;
 
 public interface ISearch {
 
@@ -6,8 +6,7 @@ public interface ISearch {
 
     void stop();
 
-    void ponderhit();
-
+//    void ponderhit();
     boolean isStopped();
 
 //    public abstract void setSearchDepth(int searchDepth);

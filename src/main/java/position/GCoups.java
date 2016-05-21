@@ -14,7 +14,6 @@ public class GCoups implements ICodage {
     private final int caseOTour;
     private final int caseXTour;
 
-
     public GCoups(int piece, int caseO, int caseX, int pieceprise, TYPE_DE_COUPS type_de_coups) {
         this.piece = piece;
         this.caseO = caseO;
@@ -103,7 +102,6 @@ public class GCoups implements ICodage {
     public int getPiecePromotion() {
         return piecePromotion;
     }
-
 
     @Override
     public int hashCode() {

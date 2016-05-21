@@ -1,22 +1,7 @@
 package ia;
 
-import static org.joor.Reflect.on;
 import position.GPosition;
 import static position.ICodage.*;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
-import static org.joor.Reflect.on;
 import static org.joor.Reflect.on;
 
 class GPositionEval {

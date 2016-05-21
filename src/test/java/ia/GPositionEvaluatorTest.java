@@ -1,6 +1,6 @@
 package ia;
 
-import game.GGame;
+import gcle.Search;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class GPositionEvaluatorTest implements ICodage {
 //        f="rnb1kb1r/ppp1pppp/8/8/3QP3/8/PP2P1PP/RNB1KBNR b KQkq - 0 6";
         f = "rnq4r/pp2bkpp/2p5/8/8/8/PPP1NKPP/RNBQ3R b - - 0 10";
 
-        GGame g = new GGame(f);
+        Search g = new Search(f);
         gp = g.getGPosition();
     }
 

@@ -13,7 +13,7 @@ import static position.ICodage.TYPE_DE_COUPS.*;
 
 public class Ouverture implements ICodage {
 
-  private final  Tree<GCoups> O;
+    private final Tree<GCoups> O;
 
     public Ouverture() throws NodeNotFoundException {
         O = new ArrayListTree<>();
@@ -80,7 +80,6 @@ public class Ouverture implements ICodage {
 //        }
 //
 //    }
-
     private class Aleatoire {
 
         private final Random randomGenerator;
