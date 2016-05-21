@@ -10,15 +10,17 @@ import ouverture.Ouverture;
 import position.FenToGPosition;
 import position.GCoups;
 import position.GPosition;
+import position.ICodage;
+import static position.ICodage.TYPE_DE_COUPS.Deplacement;
 
-public class Search implements ISearch, Runnable {
+public class Search implements ICodage,ISearch, Runnable {
 
     private boolean canStop;
     private boolean stopped;
     private Result bestResult = null;
     private final Thread thread = new Thread(this);
     private final Semaphore semaphore = new Semaphore(0);
-    private final ChessLogger logger = ChessLogger.getLogger();
+//    private final ChessLogger logger = ChessLogger.getLogger();
     private final IProtocol protocol;
     private final GPosition gp;
     private final IA ia;
@@ -35,17 +37,22 @@ public class Search implements ISearch, Runnable {
         gp = FenToGPosition.toGPosition(f);
         ia = new IA(gp, depth);
         this.protocol = protocol;
+
     }
 
 //    public Search(GPositionEvaluator evaluation, IProtocol protocol) {
 //        this.protocol = protocol;
 //    }
-    public GCoups getMeilleurCoups() throws NodeNotFoundException {
+    @Override 
+    public final GCoups getMeilleurCoups() throws NodeNotFoundException {
         //ouvertures
         Ouverture ouv = new Ouverture();
-        GCoups gc = null;
+        /*
+        @TODO count moves
+        */
+        GCoups lastmove = new GCoups(PION,e2,e4,0,Deplacement);
         if (!end_opening) {
-            GCoups next_coups = ouv.searchNextMoveInTree(gc);
+            GCoups next_coups = ouv.searchNextMoveInTree(lastmove);
             if (next_coups != null) {
                 return next_coups;
             } else {
@@ -101,7 +108,7 @@ public class Search implements ISearch, Runnable {
             // Wait for initialization
             this.semaphore.acquire();
         } catch (InterruptedException e) {
-            this.logger.debug(e.getMessage());
+//            this.logger.debug(e.getMessage());
             // Do nothing
         }
     }
@@ -114,7 +121,7 @@ public class Search implements ISearch, Runnable {
             // Wait for the thread to die
             this.thread.join();
         } catch (InterruptedException e) {
-            this.logger.debug(e.getMessage());
+//            this.logger.debug(e.getMessage());
             // Do nothing
         }
     }

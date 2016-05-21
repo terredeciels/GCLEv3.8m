@@ -47,6 +47,17 @@ public class GCoups implements ICodage {
         this.piecePromotion = PAS_DE_PIECE;
     }
 
+    public GCoups(int caseO, int caseX) {
+        this.caseO = caseO;
+        this.caseX = caseX;
+        this.piece = PAS_DE_PIECE;
+        this.pieceprise = PAS_DE_PIECE;
+        this.type_de_coups = null;
+        this.piecePromotion = PAS_DE_PIECE;
+        this.caseOTour = PAS_DE_PIECE;
+        this.caseXTour = PAS_DE_PIECE;
+    }
+
     public static String getString(GCoups coups) {
         if (((coups.piece == ROI) && (coups.caseO == e1) && (coups.caseX == g1))
                 || ((coups.piece == ROI) && (coups.caseO == e8) && (coups.caseX == g8))) {

@@ -1,5 +1,8 @@
 package gcle;
 
+import com.googlecode.jctree.NodeNotFoundException;
+import position.GCoups;
+
 public interface ISearch {
 
     void start();
@@ -8,6 +11,8 @@ public interface ISearch {
 
 //    void ponderhit();
     boolean isStopped();
+    
+    GCoups getMeilleurCoups() throws NodeNotFoundException;// ??
 
 //    public abstract void setSearchDepth(int searchDepth);
 //
@@ -26,4 +31,9 @@ public interface ISearch {
 //    public abstract void setSearchPonder();
 //
 //    public abstract void setSearchMoveList(List<GenericMove> moveList);
+
+    //    public Search(GPositionEvaluator evaluation, IProtocol protocol) {
+    //        this.protocol = protocol;
+    //    }
+    
 }

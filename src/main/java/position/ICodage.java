@@ -87,6 +87,7 @@ public interface ICodage {
         "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
         "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
     };
+    final String STRING_COL = "abcdefgh";
 
     final String[] STRING_PIECE = {"", "N", "B", "R", "Q"};
     // Types pièces codés comme dans CP

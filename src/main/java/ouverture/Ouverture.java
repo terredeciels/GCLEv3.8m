@@ -14,14 +14,18 @@ import static position.ICodage.TYPE_DE_COUPS.*;
 public class Ouverture implements ICodage {
 
     private final Tree<GCoups> O;
+    private GCoups _root;
+    
 
     public Ouverture() throws NodeNotFoundException {
         O = new ArrayListTree<>();
+  
         setOpeningTree();
     }
 
     // choix aleatoire d'un coups enfant du coups en cours (gc)
     public GCoups searchNextMoveInTree(GCoups gc) throws NodeNotFoundException {
+     
         Iterator<GCoups> ito = O.iterator();
         while (ito.hasNext()) {
             GCoups coups = ito.next();
@@ -32,11 +36,12 @@ public class Ouverture implements ICodage {
                 return choix;
             }
         }
+
         return null;
     }
 
     private void setOpeningTree() throws NodeNotFoundException {
-        GCoups _root = new GCoups(0, 0, 0, 0, null);
+        _root = new GCoups(0, 0, 0, 0, null);
         O.add(_root);
         GCoups _e4 = new GCoups(PION, e2, e4, 0, Deplacement);
         GCoups _d4 = new GCoups(PION, d2, d4, 0, Deplacement);
