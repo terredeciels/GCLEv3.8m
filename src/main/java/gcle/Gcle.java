@@ -15,8 +15,6 @@ import com.fluxchess.jcpi.commands.ProtocolInitializeAnswerCommand;
 import com.fluxchess.jcpi.commands.ProtocolReadyAnswerCommand;
 import com.fluxchess.jcpi.protocols.IProtocolHandler;
 import com.googlecode.jctree.NodeNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import position.GCoups;
 import position.GPosition;
 import position.ICodage;
@@ -41,12 +39,6 @@ public class Gcle extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-//        String fen = ICodage.FEN_INITIALE;
-//        GPosition gp = FenToGPosition.toGPosition(fen);
-//        GameView gameview = new GameView(gp);
-//        ChessGui gui = new ChessGui(gameview);
-//        gui.setGuiPosition();
-
         new Gcle().run();
     }
 
