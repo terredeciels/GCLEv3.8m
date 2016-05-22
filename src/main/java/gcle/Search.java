@@ -22,7 +22,8 @@ public class Search implements ICodage, ISearch, Runnable {
     private GCoups lastmove;
 
     public Search(GGame game) {
-        lastmove = game.listecoupspartie[game.halfmove];
+        int halfmove =game.halfmove-1;
+        lastmove = game.listecoupspartie[halfmove];
         gp = game.gp;
         ia = new IA(gp, depth);
     }
@@ -35,12 +36,7 @@ public class Search implements ICodage, ISearch, Runnable {
 
     @Override
     public final GCoups getMeilleurCoups() throws NodeNotFoundException {
-        //ouvertures
         Ouverture ouv = new Ouverture();
-        /*
-        @TODO count moves
-         */
-// !!!(test)       GCoups lastmove = new GCoups(PION, e2, e4, 0, Deplacement);
         if (!end_opening) {
             GCoups next_coups = ouv.searchNextMoveInTree(lastmove);
             if (next_coups != null) {
