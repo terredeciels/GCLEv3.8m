@@ -15,17 +15,16 @@ public class Ouverture implements ICodage {
 
     private final Tree<GCoups> O;
     private GCoups _root;
-    
 
     public Ouverture() throws NodeNotFoundException {
         O = new ArrayListTree<>();
-  
+
         setOpeningTree();
     }
 
     // choix aleatoire d'un coups enfant du coups en cours (gc)
     public GCoups searchNextMoveInTree(GCoups gc) throws NodeNotFoundException {
-     
+
         Iterator<GCoups> ito = O.iterator();
         while (ito.hasNext()) {
             GCoups coups = ito.next();

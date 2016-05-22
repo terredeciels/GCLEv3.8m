@@ -1,5 +1,6 @@
 package gcle;
 
+import com.googlecode.jctree.NodeNotFoundException;
 import gui.ChessGui;
 import gui.GameView;
 import java.io.BufferedReader;
@@ -19,19 +20,16 @@ public class GcleConsole implements ICodage {
 
     static BufferedReader bufferRead;
 
-    public static void main(String[] args) throws IOException {
-
-        while (true) {
-            String[] input = new String[]{""};
-            System.out.println("Enter command : ");
-             bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            String cons = bufferRead.readLine();
-            input[0] = cons;
-            parse(input);
-        }
+    public static void main(String[] args) throws IOException, NodeNotFoundException, IllegalMoveException {
+        String[] input = new String[]{""};
+        System.out.println("Enter command : ");
+        bufferRead = new BufferedReader(new InputStreamReader(System.in));
+        String cons = bufferRead.readLine();
+        input[0] = cons;
+        parse(input);
     }
 
-    private static void parse(String[] in) throws IOException {
+    private static void parse(String[] in) throws IOException, NodeNotFoundException, IllegalMoveException {
 
         Options options = new Options();
 
@@ -42,13 +40,10 @@ public class GcleConsole implements ICodage {
         options.addOption("gb", false, "launch new game with black");
 
         options.addOption("fen", true, "get fen position");
-        
-//         options.addOption("", true, "get move");
 
         CommandLineParser parser = new DefaultParser();
         String fen = ICodage.FEN_INITIALE;
         try {
-
             CommandLine cmd = parser.parse(options, in);
             if (cmd.hasOption("q")) {
                 System.out.println("bye !");
@@ -64,13 +59,10 @@ public class GcleConsole implements ICodage {
                 new GGameConsole(NOIR, fen).play();
             } else if (cmd.hasOption("g")) {//ordi a blancs et noirs
                 //auto-play
-            } else if (cmd.hasOption("fen")) {
-                //recuperer second arg (fen)
-
+            } else if (cmd.hasOption("fen")) {//recuperer second arg (fen)
             }
 
         } catch (ParseException exp) {
-
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
         }
 

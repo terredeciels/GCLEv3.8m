@@ -19,16 +19,18 @@ public class Search implements ICodage, ISearch, Runnable {
     private final int depth = 1;
     private boolean end_opening;
     private boolean stopped;
+    private GCoups lastmove;
 
-    public Search(GPosition gp) {
-        this.gp = gp;
-        this.ia = new IA(gp, depth);
+    public Search(GGame game) {
+        lastmove = game.listecoupspartie[game.halfmove];
+        gp = game.gp;
+        ia = new IA(gp, depth);
     }
 
     public Search(String f) {
 
-        this.gp = FenToGPosition.toGPosition(f);
-        this.ia = new IA(gp, depth);
+        gp = FenToGPosition.toGPosition(f);
+        ia = new IA(gp, depth);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Search implements ICodage, ISearch, Runnable {
         /*
         @TODO count moves
          */
-        GCoups lastmove = new GCoups(PION, e2, e4, 0, Deplacement);
+// !!!(test)       GCoups lastmove = new GCoups(PION, e2, e4, 0, Deplacement);
         if (!end_opening) {
             GCoups next_coups = ouv.searchNextMoveInTree(lastmove);
             if (next_coups != null) {

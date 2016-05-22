@@ -1,66 +1,55 @@
 package gcle;
 
 import com.googlecode.jctree.NodeNotFoundException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.collections.iterators.ArrayIterator;
 import position.GCoups;
 import position.GPosition;
 import position.UndoGCoups;
 
-class GGame {// une partie
+public class GGame {
 
-    int ordi_color;
-    int human_color;
-    GPosition this_gp;
-    GCoups this_gcoups;
-    List<GCoups> listecoupspartie;
-    List<GPosition> listepositionspartie;
+    GCoups gcoups;
+    GCoups gcoups_curr;
+    GPosition gp;
+
+    GCoups[] listecoupspartie;
+    GPosition[] listepositionspartie;
     int halfmove;
-//    int nummove;
 
     public GGame() {
-        this.listecoupspartie = new ArrayList<>();
-        this.listepositionspartie = new ArrayList<>();
-        this.halfmove = 1;
-//        this.nummove=1;
+        listecoupspartie = new GCoups[100];
+        listepositionspartie = new GPosition[100];
+        halfmove = 1;
     }
 
-    void playHuman(int human_color, GCoups gcoups) {
-        this.listepositionspartie.add(halfmove, this_gp);
-        this.listecoupspartie.add(halfmove, gcoups);
+    void playHuman() {
+        listepositionspartie[halfmove] = gp;
+        listecoupspartie[halfmove] = gcoups;
         UndoGCoups ug = new UndoGCoups();
-        this_gp.exec(gcoups, ug);
-        this.listepositionspartie.add(halfmove++, this_gp);
+        gp.exec(gcoups, ug);
+        listepositionspartie[halfmove++] = gp;
     }
 
-    void playEngine(int ordi_color) {
-        // new Thread ?  
+    void playEngine() throws NodeNotFoundException {
+        // new Thread ?
         // search.run();// ??
         // search.start(); //??
-        Search search = new Search(this_gp);
-        try {
-            this_gcoups = search.getMeilleurCoups();
-            this.listecoupspartie.add(halfmove, this_gcoups);
-            UndoGCoups ug = new UndoGCoups();
-            this_gp.exec(this_gcoups, ug);
-            this.listepositionspartie.add(halfmove++, this_gp);
-        } catch (NodeNotFoundException ex) {
-
-        }
+        Search search = new Search(this);
+        gcoups_curr = search.getMeilleurCoups();
+        listecoupspartie[halfmove] = gcoups_curr;
+        UndoGCoups ug = new UndoGCoups();
+        gp.exec(gcoups_curr, ug);
+        listepositionspartie[halfmove++] = gp;
     }
 
     @Override
     public String toString() {
         StringBuilder buff = new StringBuilder();
-        Iterator<GCoups> it = listecoupspartie.iterator();
+        ArrayIterator it = new ArrayIterator(listecoupspartie);
         while (it.hasNext()) {
-            buff.append(GCoups.getString(it.next()));
+            buff.append(GCoups.getString((GCoups) it.next()));
             buff.append(";");
         }
         return buff.toString();
     }
-
 }

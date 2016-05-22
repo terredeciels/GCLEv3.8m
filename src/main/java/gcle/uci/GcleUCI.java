@@ -53,7 +53,7 @@ public class GcleUCI extends AbstractEngine {
         f = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 
 //        search = new Search(f, getProtocol());
- search = new Search(f);
+        search = new Search(f);
         try {
             GCoups coups = search.getMeilleurCoups();
             System.out.println(GCoups.getString(coups));

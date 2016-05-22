@@ -1,0 +1,60 @@
+//package gcle;
+//
+//class GGame {
+
+//    int ordi_color;
+//    int human_color;
+//    GPosition gp;
+//    GCoups this_gcoups;
+//    GCoups[] listecoupspartie;
+//    GPosition[] listepositionspartie;
+//    int halfmove;
+
+//    public GGame(GPosition gp,int human_color) {
+//        this.gp=gp;
+//        this.human_color=human_color;
+//        this.ordi_color=-human_color;
+//        this.listecoupspartie = new GCoups[100];
+//        this.listepositionspartie = new GPosition[100];
+//        this.halfmove = 1;
+//    }
+//
+//    void playHuman(GCoups gcoups) {
+//        this.this_gcoups=gcoups;
+//        this.listepositionspartie[halfmove] = gp;
+//        this.listecoupspartie[halfmove] = gcoups;
+//        UndoGCoups ug = new UndoGCoups();
+//        gp.exec(gcoups, ug);
+//        this.listepositionspartie[halfmove++] = gp;
+//
+//    }
+//
+//    void playEngine() {
+//        // new Thread ?  
+//        // search.run();// ??
+//        // search.start(); //??
+//        Search search = new Search(gp);
+//        try {
+//            this_gcoups = search.getMeilleurCoups();
+//            this.listecoupspartie[halfmove] = this_gcoups;
+//            UndoGCoups ug = new UndoGCoups();
+//            gp.exec(this_gcoups, ug);
+//            this.listepositionspartie[halfmove++] = gp;
+//        } catch (NodeNotFoundException ex) {
+//
+//        }
+//    }
+//
+//    @Override
+//    public String toString() {
+//        StringBuilder buff = new StringBuilder();
+//         ArrayIterator it= new ArrayIterator(listecoupspartie);
+//        while (it.hasNext()) {
+//            buff.append(GCoups.getString((GCoups) it.next()));
+//            buff.append(";");
+//        }
+//        return buff.toString();
+//    }
+
+//}
+

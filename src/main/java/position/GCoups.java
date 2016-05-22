@@ -156,4 +156,9 @@ public class GCoups implements ICodage {
         return this.type_de_coups == other.type_de_coups;
     }
 
+    @Override
+    public String toString() {
+        return getString(this);
+    }
+
 }

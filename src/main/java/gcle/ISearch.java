@@ -2,6 +2,7 @@ package gcle;
 
 import com.googlecode.jctree.NodeNotFoundException;
 import position.GCoups;
+import position.GPosition;
 
 public interface ISearch {
 
