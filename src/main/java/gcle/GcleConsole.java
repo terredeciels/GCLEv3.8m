@@ -15,9 +15,9 @@ import position.GCoups;
 import position.GPosition;
 import position.ICodage;
 
-public class GConsole implements ICodage {
+public class GcleConsole implements ICodage {
 
-    private static BufferedReader bufferRead;
+    static BufferedReader bufferRead;
 
     public static void main(String[] args) throws IOException {
 
@@ -42,6 +42,8 @@ public class GConsole implements ICodage {
         options.addOption("gb", false, "launch new game with black");
 
         options.addOption("fen", true, "get fen position");
+        
+//         options.addOption("", true, "get move");
 
         CommandLineParser parser = new DefaultParser();
         String fen = ICodage.FEN_INITIALE;
@@ -57,9 +59,9 @@ public class GConsole implements ICodage {
                 ChessGui gui = new ChessGui(gameview);
                 gui.setGuiPosition();
             } else if (cmd.hasOption("gw")) {//humain a blancs
-                new GGame(bufferRead,NOIR, fen).play();
+                new GGameConsole(BLANC, fen).play();
             } else if (cmd.hasOption("gb")) {//humain a noirs
-                new GGame(bufferRead,BLANC, fen).play();
+                new GGameConsole(NOIR, fen).play();
             } else if (cmd.hasOption("g")) {//ordi a blancs et noirs
                 //auto-play
             } else if (cmd.hasOption("fen")) {

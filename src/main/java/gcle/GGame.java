@@ -1,50 +1,66 @@
 package gcle;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.googlecode.jctree.NodeNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import position.GCoups;
-import position.ICodage;
+import position.GPosition;
+import position.UndoGCoups;
 
-class GGame implements ICodage {
+class GGame {// une partie
 
-    private final String fen;
+    int ordi_color;
+    int human_color;
+    GPosition this_gp;
+    GCoups this_gcoups;
+    List<GCoups> listecoupspartie;
+    List<GPosition> listepositionspartie;
+    int halfmove;
+//    int nummove;
 
-    private final int ordi_color;
-    private final int human_color;
-    private final boolean end_of_game;
-    private final BufferedReader bufferRead;
-
-    public GGame(BufferedReader bufferRead,int ordi_color, String fen) {
-        this.bufferRead = bufferRead;
-        this.end_of_game = false;
-        this.ordi_color = ordi_color;
-        this.human_color = -ordi_color;
-        this.fen = fen;
-
+    public GGame() {
+        this.listecoupspartie = new ArrayList<>();
+        this.listepositionspartie = new ArrayList<>();
+        this.halfmove = 1;
+//        this.nummove=1;
     }
 
-    void play() throws IOException {
+    void playHuman(int human_color, GCoups gcoups) {
+        this.listepositionspartie.add(halfmove, this_gp);
+        this.listecoupspartie.add(halfmove, gcoups);
+        UndoGCoups ug = new UndoGCoups();
+        this_gp.exec(gcoups, ug);
+        this.listepositionspartie.add(halfmove++, this_gp);
+    }
 
-        while (!end_of_game) {
-            if (human_color == BLANC) {
-                System.out.println("Enter move : ");
-                String coupsS = bufferRead.readLine();
-                try {
-                    GCoups gcoups = GConsole.toCase(coupsS);
-                    System.out.println(GCoups.getString(gcoups));
-                    //verifier si coups valide
+    void playEngine(int ordi_color) {
+        // new Thread ?  
+        // search.run();// ??
+        // search.start(); //??
+        Search search = new Search(this_gp);
+        try {
+            this_gcoups = search.getMeilleurCoups();
+            this.listecoupspartie.add(halfmove, this_gcoups);
+            UndoGCoups ug = new UndoGCoups();
+            this_gp.exec(this_gcoups, ug);
+            this.listepositionspartie.add(halfmove++, this_gp);
+        } catch (NodeNotFoundException ex) {
 
-                    //ajouter propriétés du coups
-                    
-                } catch (IllegalMoveException ex) {
-                }
-            } else {
-                // new Thread ?
-                Search search = new Search(fen);
-               // search.run();// ??
-               // search.start(); //??
-            }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder buff = new StringBuilder();
+        Iterator<GCoups> it = listecoupspartie.iterator();
+        while (it.hasNext()) {
+            buff.append(GCoups.getString(it.next()));
+            buff.append(";");
+        }
+        return buff.toString();
+    }
+
 }

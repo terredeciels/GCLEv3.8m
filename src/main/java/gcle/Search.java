@@ -20,6 +20,11 @@ public class Search implements ICodage, ISearch, Runnable {
     private boolean end_opening;
     private boolean stopped;
 
+    public Search(GPosition gp) {
+        this.gp = gp;
+        this.ia = new IA(gp, depth);
+    }
+
     public Search(String f) {
 
         this.gp = FenToGPosition.toGPosition(f);
