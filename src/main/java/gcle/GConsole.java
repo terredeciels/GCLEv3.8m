@@ -15,74 +15,75 @@ import position.GCoups;
 import position.GPosition;
 import position.ICodage;
 
-public class GCommandLine implements ICodage {
+public class GConsole implements ICodage {
+
+    private static BufferedReader bufferRead;
 
     public static void main(String[] args) throws IOException {
+
         while (true) {
             String[] input = new String[]{""};
             System.out.println("Enter command : ");
-            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            String s = bufferRead.readLine();
-            input[0] = s;
+             bufferRead = new BufferedReader(new InputStreamReader(System.in));
+            String cons = bufferRead.readLine();
+            input[0] = cons;
             parse(input);
         }
     }
 
     private static void parse(String[] in) throws IOException {
-        // create Options object
+
         Options options = new Options();
-        // add q option
+
         options.addOption("q", false, "quit gcle");
         options.addOption("gui", false, "launch gui");
+        options.addOption("g", false, "launch auto-play");
         options.addOption("gw", false, "launch new game with white");
         options.addOption("gb", false, "launch new game with black");
-        CommandLineParser parser = new DefaultParser();
 
+        options.addOption("fen", true, "get fen position");
+
+        CommandLineParser parser = new DefaultParser();
+        String fen = ICodage.FEN_INITIALE;
         try {
-            // parse the command line arguments
+
             CommandLine cmd = parser.parse(options, in);
             if (cmd.hasOption("q")) {
                 System.out.println("bye !");
                 System.exit(0);
             } else if (cmd.hasOption("gui")) {
-                String fen = ICodage.FEN_INITIALE;
                 GPosition gp = FenToGPosition.toGPosition(fen);
                 GameView gameview = new GameView(gp);
                 ChessGui gui = new ChessGui(gameview);
                 gui.setGuiPosition();
-            } else if (cmd.hasOption("gw")) {
-                System.out.println("Enter move : ");
-                BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-                String coupsS = bufferRead.readLine();
-                try {
-                    GCoups gcoups = toCase(coupsS);
-                    System.out.println(GCoups.getString(gcoups));
-                    //verifier si coups valide
-                    //ajouter propriétés du coups
+            } else if (cmd.hasOption("gw")) {//humain a blancs
+                new GGame(bufferRead,NOIR, fen).play();
+            } else if (cmd.hasOption("gb")) {//humain a noirs
+                new GGame(bufferRead,BLANC, fen).play();
+            } else if (cmd.hasOption("g")) {//ordi a blancs et noirs
+                //auto-play
+            } else if (cmd.hasOption("fen")) {
+                //recuperer second arg (fen)
 
-                } catch (IllegalMoveException ex) {
-                }
-
-            } else if (cmd.hasOption("gb")) {
-                Gcle.main(null);
             }
 
         } catch (ParseException exp) {
-            // oops, something went wrong
+
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
         }
 
     }
 
-    private static GCoups toCase(String coupsS) throws IllegalMoveException {
+    static GCoups toCase(String coupsS) throws IllegalMoveException {
         String[] coupsT = coupsS.split("");
         int colO = STRING_COL.indexOf(coupsS.charAt(0));
         int rgO = Integer.parseInt(coupsT[1]);
         int colX = STRING_COL.indexOf(coupsS.charAt(2));
-        int rgX =  Integer.parseInt(coupsT[3]);
+        int rgX = Integer.parseInt(coupsT[3]);
         int caseO = CASES117[colO + 8 * (rgO - 1)];
         int caseX = CASES117[colX + 8 * (rgX - 1)];
 
         return new GCoups(caseO, caseX);
     }
+
 }

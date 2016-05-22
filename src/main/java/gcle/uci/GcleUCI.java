@@ -1,4 +1,4 @@
-package gcle;
+package gcle.uci;
 
 import com.fluxchess.jcpi.AbstractEngine;
 import com.fluxchess.jcpi.commands.EngineAnalyzeCommand;
@@ -15,23 +15,25 @@ import com.fluxchess.jcpi.commands.ProtocolInitializeAnswerCommand;
 import com.fluxchess.jcpi.commands.ProtocolReadyAnswerCommand;
 import com.fluxchess.jcpi.protocols.IProtocolHandler;
 import com.googlecode.jctree.NodeNotFoundException;
+import gcle.ISearch;
+import gcle.Search;
 import position.GCoups;
 import position.GPosition;
 import position.ICodage;
 
-public class Gcle extends AbstractEngine {
+public class GcleUCI extends AbstractEngine {
 
     public final static boolean DEBUG = true;
     private ISearch search;
     private GPosition gp;
 
-    public Gcle() {
+    public GcleUCI() {
         // Set the protocol
 //        ChessLogger.setProtocol(getProtocol());
         initialize();
     }
 
-    public Gcle(IProtocolHandler handler) {
+    public GcleUCI(IProtocolHandler handler) {
         super(handler);
         // Set the protocol
 //        ChessLogger.setProtocol(handler);
@@ -39,7 +41,7 @@ public class Gcle extends AbstractEngine {
     }
 
     public static void main(String[] args) {
-        new Gcle().run();
+        new GcleUCI().run();
     }
 
     private void initialize() {
@@ -50,8 +52,8 @@ public class Gcle extends AbstractEngine {
         f = "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1";
         f = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 
-        // new GCommandLine();
-        search = new Search(f, getProtocol());
+//        search = new Search(f, getProtocol());
+ search = new Search(f);
         try {
             GCoups coups = search.getMeilleurCoups();
             System.out.println(GCoups.getString(coups));
