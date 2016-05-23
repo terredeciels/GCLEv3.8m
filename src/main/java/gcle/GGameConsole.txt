@@ -148,3 +148,4 @@ public class GGameConsole extends GGame implements ICodage {
         gui.setGuiPosition();
     }
 }
+
