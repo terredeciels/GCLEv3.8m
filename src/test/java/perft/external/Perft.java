@@ -48,11 +48,11 @@ public class Perft {
     }
 
     public static String toString(GCoups gc) {
-        int fromSquare = gc.getCaseO();
-        int toSquare = gc.getCaseX();
-        int promotedPiece = gc.getPiecePromotion();
+//        int fromSquare = gc.getCaseO();
+//        int toSquare = gc.getCaseX();
+//        int promotedPiece = gc.getPiecePromotion();
 //		boolean isQueening = MoveUtils.isQueening(move);
-        boolean isEnPassentCapture = gc.getTypeDeCoups() == TYPE_DE_COUPS.EnPassant;
+//        boolean isEnPassentCapture = gc.getTypeDeCoups() == TYPE_DE_COUPS.EnPassant;
         StringBuilder result = new StringBuilder();
         result.append(GCoups.getString(gc));
 //		if (isQueening && (promotedPiece == 0)) {

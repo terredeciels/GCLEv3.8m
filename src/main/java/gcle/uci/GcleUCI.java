@@ -28,7 +28,7 @@ public class GcleUCI extends AbstractEngine {
      */
     public final static boolean DEBUG = true;
     private ISearch search;
-    private GPosition gp;
+//    private GPosition gp;
 
     public GcleUCI() {
         // Set the protocol

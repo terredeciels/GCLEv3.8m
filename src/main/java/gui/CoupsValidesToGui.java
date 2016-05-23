@@ -16,7 +16,7 @@ public class CoupsValidesToGui implements ICodage {
     }
 
     public void start() {
-        ArrayList<GCoups> coupsvalides = gp.getCoupsValides();
+        gp.getCoupsValides();
         message = toString(gp);
     }
 

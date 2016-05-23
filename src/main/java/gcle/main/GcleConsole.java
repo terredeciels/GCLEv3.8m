@@ -14,7 +14,7 @@ public class GcleConsole {
     @TODO tests 
      */
     public static void main(String[] args) throws IOException, NodeNotFoundException, IllegalMoveException {
-        GGameConsole gGameConsole = new GGameConsole();
+      new GGameConsole();
     }
 
 }

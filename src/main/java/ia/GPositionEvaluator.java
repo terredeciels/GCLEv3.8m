@@ -332,7 +332,7 @@ public class GPositionEvaluator implements ICodage {
                 }
 
                 /*
-                @TODO ?
+                @TODO utile?
                  */
                 // Use the bitboard erasure trick to avoid looking for additional
                 // bishops once they have all been seen
@@ -527,13 +527,13 @@ public class GPositionEvaluator implements ICodage {
         return (gp.getEtats()[caseO] < 0) ? -gp.getEtats()[caseO] : gp.getEtats()[caseO];
     }
 
-    private boolean rangFinal(int caseX, int couleur) {
-        if ((caseX >= a1) && (caseX <= h1) && (couleur == NOIR)) {
-            return true;
-        } else {
-            return (caseX >= a8) && (caseX <= h8) && (couleur == BLANC);
-        }
-    }
+//    private boolean rangFinal(int caseX, int couleur) {
+//        if ((caseX >= a1) && (caseX <= h1) && (couleur == NOIR)) {
+//            return true;
+//        } else {
+//            return (caseX >= a8) && (caseX <= h8) && (couleur == BLANC);
+//        }
+//    }
 
     private boolean rang7(int caseX, int couleur) {
         if ((caseX >= a2) && (caseX <= h2) && (couleur == NOIR)) {

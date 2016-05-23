@@ -31,7 +31,7 @@ public class Generateur extends AbstractGenerateur {
 //        boolean estEnEchec;
         for (GCoups coups : fCoups) {
             ArrayList<GCoups> pseudoCoupsPosSimul;
-            GPosition positionSimul = fPositionSimul(g_position, coups, couleur);
+            GPosition positionSimul = fPositionSimul( coups, couleur);
             caseRoiCouleur = fCaseRoi(positionSimul, couleur);
             PGenerateur pGen = new PGenerateur(positionSimul, -couleur);    // attention: -couleur
             pGen.pseudoCoups();
@@ -45,7 +45,7 @@ public class Generateur extends AbstractGenerateur {
         return aRetirer;
     }
 
-    private GPosition fPositionSimul(GPosition position, GCoups coups, int couleur) {
+    private GPosition fPositionSimul(GCoups coups, int couleur) {
 //        GPosition positionSimul = position.copieEtats();
         GPosition positionSimul = new GPosition();
         System.arraycopy(etats, 0, positionSimul.etats, 0, NB_CELLULES);

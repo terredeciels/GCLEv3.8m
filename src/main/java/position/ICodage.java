@@ -2,33 +2,33 @@ package position;
 
 public interface ICodage {
 
-    final int INFINI = Integer.MAX_VALUE;
-    final static int PAS_DE_CASE = -1;    // e.p.
-    final String FEN_INITIALE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    final int BLANC = -1,
+     int INFINI = Integer.MAX_VALUE;
+      int PAS_DE_CASE = -1;    // e.p.
+     String FEN_INITIALE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+     int BLANC = -1,
             NOIR = 1;
-    final int a1 = 26,
+     int a1 = 26,
             h1 = 33,
             a8 = 110,
             h8 = 117;
-    final int e1 = 30,
+     int e1 = 30,
             f1 = 31,
             g1 = 32,
             d1 = 29,
             c1 = 28,
             b1 = 27;
-    final int e8 = 114, f8 = 115, g8 = 116, d8 = 113, c8 = 112, b8 = 111;
-    final int d7 = 101, e7 = 102;
-    final int d2 = 41, e2 = 42; // verif
-    final int a2 = 38, h2 = 45, a7 = 98, h7 = 105;//verif
-    final int d4 = 65, e4 = 66;
-    final int e6 = 90, f6 = 91;
-    final int d5 = 77;
-    final int f3 = 55;
-    final int c2 = 40, c4 = 64;
-    final int g7 = 104, g6 = 92;
-    final int c3 = 52;
-    final int[] CASES117 = {
+     int e8 = 114, f8 = 115, g8 = 116, d8 = 113, c8 = 112, b8 = 111;
+     int d7 = 101, e7 = 102;
+     int d2 = 41, e2 = 42; // verif
+     int a2 = 38, h2 = 45, a7 = 98, h7 = 105;//verif
+     int d4 = 65, e4 = 66;
+     int e6 = 90, f6 = 91;
+     int d5 = 77;
+     int f3 = 55;
+     int c2 = 40, c4 = 64;
+     int g7 = 104, g6 = 92;
+     int c3 = 52;
+     int[] CASES117 = {
         26, 27, 28, 29, 30, 31, 32, 33,
         38, 39, 40, 41, 42, 43, 44, 45,
         50, 51, 52, 53, 54, 55, 56, 57,
@@ -38,7 +38,7 @@ public interface ICodage {
         98, 99, 100, 101, 102, 103, 104, 105,
         110, 111, 112, 113, 114, 115, 116, 117
     };
-    final int[] CASES64 = {
+     int[] CASES64 = {
         0, 1, 2, 3, 4, 5, 6, 7,
         8, 9, 10, 11, 12, 13, 14, 15,
         16, 17, 18, 19, 20, 21, 22, 23,
@@ -48,7 +48,7 @@ public interface ICodage {
         48, 49, 50, 51, 52, 53, 54, 55,
         56, 57, 58, 59, 60, 61, 62, 63};
 
-    final int[] INDICECASES = {
+     int[] INDICECASES = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, -1, -1,
@@ -63,7 +63,7 @@ public interface ICodage {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
     };
 
-    final int[] INDICECASES_GUI = {
+     int[] INDICECASES_GUI = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, 56, 57, 58, 59, 60, 61, 62, 63, -1, -1,
@@ -77,7 +77,7 @@ public interface ICodage {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
     };
-    final String[] STRING_CASES = {
+     String[] STRING_CASES = {
         "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
         "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
         "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
@@ -87,42 +87,42 @@ public interface ICodage {
         "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
         "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
     };
-    final String STRING_COL = "abcdefgh";
+     String STRING_COL = "abcdefgh";
 
-    final String[] STRING_PIECE = {"", "N", "B", "R", "Q"};
+     String[] STRING_PIECE = {"", "N", "B", "R", "Q"};
     // Types pièces codés comme dans CP
-    final int ROI = 6,
+     int ROI = 6,
             CAVALIER = 1,
             TOUR = 3,
             FOU = 2,
             DAME = 4,
             PION = 5;
-    final int[] PIECE_VALUES = {0, 300, 350, 500, 900, 100, 2000};
+     int[] PIECE_VALUES = {0, 300, 350, 500, 900, 100, 2000};
     //
-    final int NB_CASES = 64,
+     int NB_CASES = 64,
             NB_CELLULES = 144;
-    final int VIDE = 0,
+     int VIDE = 0,
             OUT = 9;
-    final int nord = +12,
+     int nord = +12,
             est = -1,
             sud = -12,
             ouest = +1;
-    final int nordest = nord + est;
-    final int nordouest = nord + ouest;
-    final int sudest = sud + est;
-    final int sudouest = sud + ouest;
-    final int[] DIR_CAVALIER = {
+     int nordest = nord + est;
+     int nordouest = nord + ouest;
+     int sudest = sud + est;
+     int sudouest = sud + ouest;
+     int[] DIR_CAVALIER = {
         2 * nord + est, 2 * nord + ouest, 2 * est + nord, 2 * est + sud, 2 * sud + est, 2 * sud + ouest,
         2 * ouest + nord, 2 * ouest + sud
     };
-    final int[] DIR_DAME = {
+     int[] DIR_DAME = {
         nord, nordest, est, sudest, sud, sudouest, ouest, nordouest
     };
-    final int[] DIR_FOU = {nordest, sudest, sudouest, nordouest};
-    final int[] DIR_ROI = {
+     int[] DIR_FOU = {nordest, sudest, sudouest, nordouest};
+     int[] DIR_ROI = {
         nord, nordest, est, sudest, sud, sudouest, ouest, nordouest
     };
-    final int[] DIR_TOUR = {nord, est, sud, ouest};
+     int[] DIR_TOUR = {nord, est, sud, ouest};
 
     enum TYPE_DE_COUPS {
 
