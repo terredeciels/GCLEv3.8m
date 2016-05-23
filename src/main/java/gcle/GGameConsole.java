@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Scanner;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -22,30 +23,47 @@ import static position.ICodage.STRING_COL;
 
 public class GGameConsole extends GGame implements ICodage {
 
-    private final boolean end_of_game;
+    private boolean end_of_game;
     private int human_color;
     private String fen;
 
     private CommandLine cmd;
-    private BufferedReader bufferRead;
+//    private BufferedReader bufferRead;
+    private final Scanner console;
+    private Options options;
+    private CommandLineParser parser;
 
     public GGameConsole() throws IOException, NodeNotFoundException, IllegalMoveException {
         end_of_game = false;
         fen = ICodage.FEN_INITIALE;
         gp = FenToGPosition.toGPosition(fen);
-        while (true) {
+        console = new Scanner(System.in);
+        System.out.println("Enter command : ");
+//        Scanner lineTokenizer;
+        while (console.hasNextLine()) {
+
+//            lineTokenizer = new Scanner(console.nextLine());
             String[] input = new String[]{""};
-            System.out.println("Enter command : ");
-            bufferRead = new BufferedReader(new InputStreamReader(System.in));
-            String cons = bufferRead.readLine();
+
+            String cons;
+//            if (lineTokenizer.hasNext()) {
+            cons = console.next(); // consume the valid token
+//            } 
+//            else {
+//                System.out.printf("syntax error ...");
+//                continue;  // proceed to the next line of input
+//            }
+//            bufferRead = new BufferedReader(new InputStreamReader(System.in));
+//            String cons = bufferRead.readLine();
             input[0] = cons;
             parse(input);
+//            lineTokenizer.close();
         }
     }
 
     private void parse(String[] in) throws IOException, NodeNotFoundException, IllegalMoveException {
 
-        Options options = new Options();
+        options = new Options();
 
         options.addOption("q", false, "quit gcle");
         options.addOption("gui", false, "launch gui");
@@ -55,7 +73,7 @@ public class GGameConsole extends GGame implements ICodage {
 
         options.addOption("fen", true, "get fen position");
 
-        CommandLineParser parser = new DefaultParser();
+        parser = new DefaultParser();
 
         try {
             cmd = parser.parse(options, in);
@@ -85,17 +103,32 @@ public class GGameConsole extends GGame implements ICodage {
 
     }
 
-    public void play() throws IOException, NodeNotFoundException, IllegalMoveException {
+    public void play() throws IOException, NodeNotFoundException, IllegalMoveException, ParseException {
 
         while (!end_of_game) {
             if (gp.getTrait() == human_color) {
                 System.out.println("Enter move : ");
-                String coupsS = bufferRead.readLine();
-
-                GCoups coups = toCase(coupsS);
-                if (isInputValidMove(coups)) {
-                    playHuman();
+//                String coupsS = bufferRead.readLine();
+                String coupsS;
+//            if (console.hasNext()) {
+                coupsS = console.next(); // consume the valid token
+                String[] input = new String[]{""};
+                input[0] = coupsS;
+                cmd = parser.parse(options, input);
+                if (!cmd.hasOption("q")) {
+                    GCoups coups = toCase(coupsS);
+                    if (isInputValidMove(coups)) {
+                        playHuman();
+                    }
+                } else {
+//                    end_of_game = true;
+                    exit();
                 }
+
+//            } 
+//        else {
+//                System.out.printf("syntax error ...");
+//            }
             } else {
                 playEngine();
                 System.out.println(gcoups_curr);
