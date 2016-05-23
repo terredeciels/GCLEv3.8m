@@ -1,5 +1,7 @@
 package gcle;
 
-class IllegalMoveException extends Exception {
+public class IllegalMoveException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
 }
