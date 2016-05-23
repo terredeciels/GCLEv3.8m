@@ -20,9 +20,10 @@ public class Search implements ICodage, ISearch, Runnable {
     private boolean end_opening;
     private boolean stopped;
     private GCoups lastmove;
+    private int halfmove;
 
     public Search(GGame game) {
-        int halfmove =game.halfmove-1;
+        halfmove =game.halfmove-1;
         lastmove = game.listecoupspartie[halfmove];
         gp = game.gp;
         ia = new IA(gp, depth);
@@ -38,7 +39,7 @@ public class Search implements ICodage, ISearch, Runnable {
     public final GCoups getMeilleurCoups() throws NodeNotFoundException {
         Ouverture ouv = new Ouverture();
         if (!end_opening) {
-            GCoups next_coups = ouv.searchNextMoveInTree(lastmove);
+            GCoups next_coups = ouv.searchNextMoveInTree(halfmove,lastmove);
             if (next_coups != null) {
                 return next_coups;
             } else {
