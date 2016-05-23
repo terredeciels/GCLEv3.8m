@@ -8,6 +8,9 @@ import static position.ICodage.ROI;
 
 public class GPositionEvaluator implements ICodage {
 
+    /*
+    @TODO GPositionEvaluator, effacer GPositionEval et IAleatoire
+     */
     int SIDE_BLACK = 1;
     int SIDE_WHITE = 0;
 

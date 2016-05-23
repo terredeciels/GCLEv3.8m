@@ -7,6 +7,12 @@ import java.io.IOException;
 
 public class GcleConsole {
 
+    /*
+    @TODO exceptions 
+     */
+ /*
+    @TODO tests 
+     */
     public static void main(String[] args) throws IOException, NodeNotFoundException, IllegalMoveException {
         GGameConsole gGameConsole = new GGameConsole();
     }

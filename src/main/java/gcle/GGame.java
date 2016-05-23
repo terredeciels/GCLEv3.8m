@@ -8,6 +8,9 @@ import position.UndoGCoups;
 
 public class GGame {
 
+    /*
+    @TODO Thread
+     */
     GCoups gcoups;
     GCoups gcoups_curr;
     GPosition gp;

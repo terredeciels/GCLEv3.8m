@@ -13,6 +13,9 @@ import static position.ICodage.TYPE_DE_COUPS.*;
 
 public class Ouverture implements ICodage {
 
+    /*
+    @TODO distinguer ouvertures noirs et blancs
+     */
     private final Tree<GCoups> O;
     private GCoups _root;
 
@@ -61,10 +64,10 @@ public class Ouverture implements ICodage {
         O.add(_root, _e4);
         O.add(_root, _d4);
 
-        O.add(_e4, _e6); 
+        O.add(_e4, _e6);
         O.add(_d4, _Cf6);
         O.add(_e6, _d4);
-        
+
         O.add(_d4, _d5);
         O.add(_d5, _e4xd5);
         O.add(_d5, _Cf3);

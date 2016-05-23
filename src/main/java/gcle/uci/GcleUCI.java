@@ -23,6 +23,9 @@ import position.ICodage;
 
 public class GcleUCI extends AbstractEngine {
 
+    /*
+    @TODO UCI
+     */
     public final static boolean DEBUG = true;
     private ISearch search;
     private GPosition gp;

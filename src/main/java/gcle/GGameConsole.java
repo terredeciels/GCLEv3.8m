@@ -3,9 +3,7 @@ package gcle;
 import com.googlecode.jctree.NodeNotFoundException;
 import gui.ChessGui;
 import gui.GameView;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Scanner;
 import org.apache.commons.cli.CommandLine;
@@ -16,19 +14,17 @@ import org.apache.commons.cli.ParseException;
 import position.FenToGPosition;
 import position.GCoups;
 import position.ICodage;
-import static position.ICodage.BLANC;
-import static position.ICodage.CASES117;
-import static position.ICodage.NOIR;
-import static position.ICodage.STRING_COL;
+import static position.ICodage.*;
 
 public class GGameConsole extends GGame implements ICodage {
 
+    /*
+    @TODO tests console
+     */
     private boolean end_of_game;
     private int human_color;
     private String fen;
-
     private CommandLine cmd;
-//    private BufferedReader bufferRead;
     private final Scanner console;
     private Options options;
     private CommandLineParser parser;
@@ -39,25 +35,11 @@ public class GGameConsole extends GGame implements ICodage {
         gp = FenToGPosition.toGPosition(fen);
         console = new Scanner(System.in);
         System.out.println("Enter command : ");
-//        Scanner lineTokenizer;
         while (console.hasNextLine()) {
-
-//            lineTokenizer = new Scanner(console.nextLine());
             String[] input = new String[]{""};
-
-            String cons;
-//            if (lineTokenizer.hasNext()) {
-            cons = console.next(); // consume the valid token
-//            } 
-//            else {
-//                System.out.printf("syntax error ...");
-//                continue;  // proceed to the next line of input
-//            }
-//            bufferRead = new BufferedReader(new InputStreamReader(System.in));
-//            String cons = bufferRead.readLine();
+            String cons = console.next();
             input[0] = cons;
             parse(input);
-//            lineTokenizer.close();
         }
     }
 
@@ -108,10 +90,7 @@ public class GGameConsole extends GGame implements ICodage {
         while (!end_of_game) {
             if (gp.getTrait() == human_color) {
                 System.out.println("Enter move : ");
-//                String coupsS = bufferRead.readLine();
-                String coupsS;
-//            if (console.hasNext()) {
-                coupsS = console.next(); // consume the valid token
+                String coupsS = console.next(); // consume the valid token
                 String[] input = new String[]{""};
                 input[0] = coupsS;
                 cmd = parser.parse(options, input);
@@ -124,11 +103,6 @@ public class GGameConsole extends GGame implements ICodage {
 //                    end_of_game = true;
                     exit();
                 }
-
-//            } 
-//        else {
-//                System.out.printf("syntax error ...");
-//            }
             } else {
                 playEngine();
                 System.out.println(gcoups_curr);

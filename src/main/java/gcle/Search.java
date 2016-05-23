@@ -8,10 +8,12 @@ import position.FenToGPosition;
 import position.GCoups;
 import position.GPosition;
 import position.ICodage;
-import static position.ICodage.TYPE_DE_COUPS.Deplacement;
 
 public class Search implements ICodage, ISearch, Runnable {
 
+    /*
+    TODO Thread
+     */
     private final Thread thread = new Thread(this);
     private final Semaphore semaphore = new Semaphore(0);
     private final GPosition gp;
@@ -23,7 +25,7 @@ public class Search implements ICodage, ISearch, Runnable {
     private int halfmove;
 
     public Search(GGame game) {
-        halfmove =game.halfmove-1;
+        halfmove = game.halfmove - 1;
         lastmove = game.listecoupspartie[halfmove];
         gp = game.gp;
         ia = new IA(gp, depth);
@@ -39,7 +41,7 @@ public class Search implements ICodage, ISearch, Runnable {
     public final GCoups getMeilleurCoups() throws NodeNotFoundException {
         Ouverture ouv = new Ouverture();
         if (!end_opening) {
-            GCoups next_coups = ouv.searchNextMoveInTree(halfmove,lastmove);
+            GCoups next_coups = ouv.searchNextMoveInTree(halfmove, lastmove);
             if (next_coups != null) {
                 return next_coups;
             } else {
