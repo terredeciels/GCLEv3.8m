@@ -16,6 +16,7 @@ public class Search implements ICodage, ISearch, Runnable {
      */
     private final Thread thread = new Thread(this);
     private final Semaphore semaphore = new Semaphore(0);
+    
     private final GPosition gp;
     private final IA ia;
     private final int depth = 1;
@@ -59,7 +60,7 @@ public class Search implements ICodage, ISearch, Runnable {
 
     @Override
     public void run() {
-        this.stopped = false;
+        stopped = false;
 
         // Go...
         this.semaphore.release();
@@ -69,7 +70,7 @@ public class Search implements ICodage, ISearch, Runnable {
 
     @Override
     public void start() {
-        this.thread.start();
+        thread.start();
         try {
             this.semaphore.acquire(); // ??
         } catch (InterruptedException e) {
@@ -81,14 +82,14 @@ public class Search implements ICodage, ISearch, Runnable {
         stopped = true;
         try {
             // Wait for the thread to die
-            this.thread.join();
+            thread.join();
         } catch (InterruptedException e) {
         }
     }
 
     @Override
     public boolean isStopped() {
-        return !this.thread.isAlive();
+        return !thread.isAlive();
     }
 
 }
