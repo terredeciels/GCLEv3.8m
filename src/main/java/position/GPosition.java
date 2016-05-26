@@ -14,6 +14,7 @@ public class GPosition extends GPositionMove implements ICodage {
     ArrayList<GCoups> coupsvalides;
 
     private ArrayList<String> coupsvalides_lan;
+    private boolean estEnEchec;
 
     public GPosition() {
         etats = new int[NB_CELLULES];
@@ -22,7 +23,9 @@ public class GPosition extends GPositionMove implements ICodage {
     }
 
     public ArrayList<GCoups> getCoupsValides() {
-        coupsvalides = new Generateur(this).getCoups();
+        Generateur generateur = new Generateur(this);
+        coupsvalides = generateur.getCoups();
+      estEnEchec =  generateur.estEnEchec();
 //        assert (!coupsvalides.isEmpty());
         coupsvalides_lan = new ArrayList<>();
         for (GCoups c : coupsvalides) {
@@ -79,6 +82,18 @@ public class GPosition extends GPositionMove implements ICodage {
 
     public int getTrait() {
         return trait;
+    }
+
+    public void setTrait(int trait) {
+        this.trait = trait;
+    }
+
+    public int getCaseEP() {
+        return caseEP;
+    }
+
+    public boolean estEnEchec() {
+        return estEnEchec;
     }
 
     public boolean hasRoques(int color) {
