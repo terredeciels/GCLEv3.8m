@@ -21,7 +21,7 @@ public class GPositionMove {
         int caseX = gcoups.getCaseX();
         caseEP = -1;
         Roque.trait = trait;
-        if (gcoups.getPiece() == PION && Math.abs(caseX - caseO) == 24) {
+        if (Math.abs(gcoups.getPiece()) == PION && Math.abs(caseX - caseO) == 24) {
             // avance de 2 cases
             caseEP = trait == NOIR ? caseX + 12 : caseX - 12;
         }

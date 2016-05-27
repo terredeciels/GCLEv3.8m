@@ -89,12 +89,12 @@ public class PGenerateur extends AbstractGenerateur {
             if (rangFinal(caseX)) {
                 pseudoCoupsPromotion(caseO, caseX, 0);
             } else {
-                add(new GCoups(PION, caseO, caseX, 0, TYPE_DE_COUPS.Deplacement));
+                add(new GCoups(couleur*PION, caseO, caseX, 0, TYPE_DE_COUPS.Deplacement));
             }
             if (rangInitial(caseO)) {
                 caseX = caseO + 2 * NordSudSelonCouleur;
                 if (estVide(caseX)) {
-                    add(new GCoups(PION, caseO, caseX, 0, TYPE_DE_COUPS.Deplacement));
+                    add(new GCoups(couleur*PION, caseO, caseX, 0, TYPE_DE_COUPS.Deplacement));
                 }
             }
         }
@@ -112,7 +112,7 @@ public class PGenerateur extends AbstractGenerateur {
     public void diagonalePionAttaqueRoque(int caseO, int NordSudSelonCouleur, int estOuOuest) {
         int caseX = caseO + NordSudSelonCouleur + estOuOuest;
         if (existe(caseX)) {
-            add(new GCoups(PION, caseO, caseX, etats[caseX], TYPE_DE_COUPS.Attaque));
+            add(new GCoups(couleur*PION, caseO, caseX, etats[caseX], TYPE_DE_COUPS.Attaque));
         }
     }
 
@@ -122,15 +122,15 @@ public class PGenerateur extends AbstractGenerateur {
             if (rangFinal(caseX)) {
                 pseudoCoupsPromotion(caseO, caseX, etats[caseX]);
             } else {
-                add(new GCoups(PION, caseO, caseX, etats[caseX], TYPE_DE_COUPS.Prise));
+                add(new GCoups(couleur*PION, caseO, caseX, etats[caseX], TYPE_DE_COUPS.Prise));
             }
         }
     }
 
     public void pseudoCoupsPromotion(int caseO, int caseX, int pieceprise) {
-        add(new GCoups(PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * FOU));
-        add(new GCoups(PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * CAVALIER));
-        add(new GCoups(PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * DAME));
-        add(new GCoups(PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * TOUR));
+        add(new GCoups(couleur*PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * FOU));
+        add(new GCoups(couleur*PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * CAVALIER));
+        add(new GCoups(couleur*PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * DAME));
+        add(new GCoups(couleur*PION, caseO, caseX, pieceprise, TYPE_DE_COUPS.Promotion, couleur * TOUR));
     }
 }

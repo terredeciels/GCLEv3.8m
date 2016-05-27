@@ -181,20 +181,20 @@ public class Generateur extends AbstractGenerateur {
             if (couleur == BLANC) {
                 int caseX = caseEP + sudest;
                 if (pionBlanc(caseX)) {
-                    pCoups.add(new GCoups(PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
+                    pCoups.add(new GCoups(couleur*PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
                 }
                 caseX = caseEP + sudouest;
                 if (pionBlanc(caseX)) {
-                    pCoups.add(new GCoups(PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
+                    pCoups.add(new GCoups(couleur*PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
                 }
             } else {
                 int caseX = caseEP + nordest;
                 if (pionNoir(caseX)) {
-                    pCoups.add(new GCoups(PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
+                    pCoups.add(new GCoups(couleur*PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
                 }
                 caseX = caseEP + nordouest;
                 if (pionNoir(caseX)) {
-                    pCoups.add(new GCoups(PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
+                    pCoups.add(new GCoups(couleur*PION, caseX, caseEP, 0, TYPE_DE_COUPS.EnPassant));
                 }
             }
         }
