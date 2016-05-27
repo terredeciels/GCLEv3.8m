@@ -58,6 +58,7 @@ public class FenToGPosition implements ICodage {
         ArrayList<String> cp_coupsvalides_lan = new ArrayList<>();
         for (short m : cp_coupsvalides) {
             cp_coupsvalides_lan.add(Move.getString(m));
+           
         }
         Collections.sort(cp_coupsvalides_lan);
         return cp_coupsvalides_lan;

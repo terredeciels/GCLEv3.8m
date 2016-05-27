@@ -55,4 +55,9 @@ public class GGame {
         }
         return buff.toString();
     }
+
+    public GPosition getGPosition() {
+        return gp;
+    }
+    
 }

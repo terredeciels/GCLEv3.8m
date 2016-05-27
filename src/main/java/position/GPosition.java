@@ -1,6 +1,6 @@
 package position;
 
-import gcle.uci.GcleUCI;
+import gcle.main.GcleConsole;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.chesspresso.position.Position;
@@ -117,7 +117,7 @@ public class GPosition extends GPositionMove implements ICodage {
 
     @Override
     public String toString() {
-        return GcleUCI.DEBUG ? "CP_CoupsValides : " + '\n'
+        return GcleConsole.DEBUG ? "CP_CoupsValides : " + '\n'
                 + cp_coupsvalides_lan + '\n'
                 + "G_CoupsValides : " + '\n'
                 + coupsvalides_lan
