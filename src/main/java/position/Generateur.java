@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Generateur extends AbstractGenerateur {
 
     private static final long serialVersionUID = 1L;
-    private boolean estEnEchec;
+//    private boolean estEnEchec;
 
     public Generateur(GPosition g_position) {
         super(g_position);
@@ -36,8 +36,8 @@ public class Generateur extends AbstractGenerateur {
             PGenerateur pGen = new PGenerateur(positionSimul, -couleur);    // attention: -couleur
             pGen.pseudoCoups();
             pseudoCoupsPosSimul = pGen.getCoupsValides();
-            estEnEchec = fEstEnEchec(pseudoCoupsPosSimul, caseRoiCouleur);
-            if (estEnEchec) {
+//            estEnEchec = fEstEnEchec(pseudoCoupsPosSimul, caseRoiCouleur);
+            if ( fEstEnEchec(pseudoCoupsPosSimul, caseRoiCouleur)) {
                 aRetirer.add(coups);
             }
         }
@@ -200,8 +200,8 @@ public class Generateur extends AbstractGenerateur {
         }
     }
 
-    public boolean estEnEchec() {
-        return estEnEchec;
-    }
+//    public boolean estEnEchec() {
+//        return estEnEchec;
+//    }
 
 }

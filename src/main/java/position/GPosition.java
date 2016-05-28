@@ -6,7 +6,7 @@ import java.util.Collections;
 import org.chesspresso.position.Position;
 import static position.ICodage.*;
 
-public class GPosition extends GPositionMove implements ICodage {
+public class GPosition extends GPositionMove implements ICodage,Cloneable {
 
     Position position;
     String fen;
@@ -14,7 +14,7 @@ public class GPosition extends GPositionMove implements ICodage {
     ArrayList<GCoups> coupsvalides;
 
     private ArrayList<String> coupsvalides_lan;
-    private boolean estEnEchec;
+//    private boolean estEnEchec;
 
     public GPosition() {
         etats = new int[NB_CELLULES];
@@ -25,7 +25,7 @@ public class GPosition extends GPositionMove implements ICodage {
     public ArrayList<GCoups> getCoupsValides() {
         Generateur generateur = new Generateur(this);
         coupsvalides = generateur.getCoups();
-      estEnEchec =  generateur.estEnEchec();
+//      estEnEchec =  generateur.estEnEchec();
 //        assert (!coupsvalides.isEmpty());
         coupsvalides_lan = new ArrayList<>();
         for (GCoups c : coupsvalides) {
@@ -92,9 +92,9 @@ public class GPosition extends GPositionMove implements ICodage {
         return caseEP;
     }
 
-    public boolean estEnEchec() {
-        return estEnEchec;
-    }
+//    public boolean estEnEchec() {
+//        return estEnEchec;
+//    }
 
     public boolean hasRoques(int color) {
         int c = color == BLANC ? 0 : 2;
@@ -123,6 +123,11 @@ public class GPosition extends GPositionMove implements ICodage {
                 + coupsvalides_lan
                 : "G_CoupsValides : " + '\n' + coupsvalides_lan;
 //        return coupsvalides_lan.toString();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); 
     }
 
 }
