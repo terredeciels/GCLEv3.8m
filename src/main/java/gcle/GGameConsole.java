@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import position.FenToGPosition;
 import position.GCoups;
+import position.GPosition;
 import position.ICodage;
 import static position.ICodage.*;
 
@@ -25,7 +26,7 @@ public class GGameConsole extends GGame implements ICodage {
     private int human_color;
     private String fen;
     private CommandLine cmd;
-    private final Scanner console;
+    private  Scanner console;
     private Options options;
     private CommandLineParser parser;
 
@@ -41,6 +42,20 @@ public class GGameConsole extends GGame implements ICodage {
             input[0] = cons;
             parse(input);
         }
+    }
+     public GGameConsole(GPosition gp) {
+//        end_of_game = false;
+        this.gp=gp;
+//        fen = ICodage.FEN_INITIALE;
+//        gp = FenToGPosition.toGPosition(fen);
+//        console = new Scanner(System.in);
+//        System.out.println("Enter command : ");
+//        while (console.hasNextLine()) {
+//            String[] input = new String[]{""};
+//            String cons = console.next();
+//            input[0] = cons;
+//            parse(input);
+//        }
     }
 
     private void parse(String[] in) throws IOException, NodeNotFoundException, IllegalMoveException {

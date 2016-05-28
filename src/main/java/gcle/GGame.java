@@ -33,7 +33,7 @@ public class GGame {
         listepositionspartie[halfmove++] = gp;
     }
 
-    void playEngine() throws NodeNotFoundException {
+  public  void playEngine() throws NodeNotFoundException {
         // new Thread ?
         // search.run();// ??
         // search.start(); //??

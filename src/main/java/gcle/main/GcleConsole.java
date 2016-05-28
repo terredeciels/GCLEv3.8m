@@ -4,6 +4,7 @@ import com.googlecode.jctree.NodeNotFoundException;
 import gcle.GGameConsole;
 import gcle.IllegalMoveException;
 import java.io.IOException;
+import position.ICodage;
 
 public class GcleConsole {
 
