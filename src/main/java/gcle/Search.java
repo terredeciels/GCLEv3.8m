@@ -40,15 +40,18 @@ public class Search implements ICodage, ISearch, Runnable {
 
     @Override
     public final GCoups getMeilleurCoups() throws NodeNotFoundException {
-        Ouverture ouv = new Ouverture();
-        if (!end_opening) {
-            GCoups next_coups = ouv.searchNextMoveInTree(halfmove, lastmove);
-            if (next_coups != null) {
-                return next_coups;
-            } else {
-                end_opening = true;
-            }
-        }
+        /*
+        @TODO ouvertures
+        */
+//        Ouverture ouv = new Ouverture();
+//        if (!end_opening) {
+//            GCoups next_coups = ouv.searchNextMoveInTree(halfmove, lastmove);
+//            if (next_coups != null) {
+//                return next_coups;
+//            } else {
+//                end_opening = true;
+//            }
+//        }
         ia.search();
         return ia.getMeilleurCoups();
 

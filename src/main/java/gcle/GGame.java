@@ -25,6 +25,15 @@ public class GGame {
         halfmove = 1;
     }
 
+    public GGame(GPosition gp) {
+//          System.out.println(gp);
+//         System.out.println(gp.print());//null 
+        this.gp = gp;
+         listecoupspartie = new GCoups[100];
+        listepositionspartie = new GPosition[100];
+        halfmove = 1;
+    }
+
     void playHuman() {
         listepositionspartie[halfmove] = gp;
         listecoupspartie[halfmove] = gcoups;
@@ -39,6 +48,7 @@ public class GGame {
         // search.start(); //??
         Search search = new Search(this);
         gcoups_curr = search.getMeilleurCoups();
+//        System.out.println(gcoups_curr);
         listecoupspartie[halfmove] = gcoups_curr;
         UndoGCoups ug = new UndoGCoups();
         gp.exec(gcoups_curr, ug);
@@ -58,6 +68,10 @@ public class GGame {
 
     public GPosition getGPosition() {
         return gp;
+    }
+
+    public GCoups getGCoupsCurr() {
+        return gcoups_curr;
     }
     
 }
